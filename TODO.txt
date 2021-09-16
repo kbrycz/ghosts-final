@@ -1,0 +1,32 @@
+************TODO NEXT TIME*********** 
+- Get join screen caught up
+- Get the server set up with the join and create game stuff
+- Get the lobby up and running 
+
+************BACKLOG***********
+
+
+- Fix up the store screen
+- Be able to click out text input to close it
+
+
+
+
+
+************GENERAL IDEAS***********
+
+
+
+
+
+************STRETCH***********
+
+
+
+
+
+************V2 IDEAS***********
+- Make it so that the game involves writing in your answers instead
+    - In this feature, be able to click on a person and see all of their previous answers.
+
+- Make it so the server saves some data of the people playing to get statistics
