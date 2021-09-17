@@ -1,6 +1,10 @@
 ************TODO NEXT TIME*********** 
-- Get the host edit/new game feature up and running (page)
+- Work through the bugs in the lobby edit/new game screens
+    - problems with code showing up after doing that
+    - not updating when you click save and then go right back, updates only after the second TIME
 
+- The game should tell you that you need at least 5 players to play if it is premade, and the numplayers for isCreated
+    - Remove the playersLeft stuff
 ************BACKLOG***********
 
 

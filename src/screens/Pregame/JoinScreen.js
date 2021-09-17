@@ -50,7 +50,7 @@ class JoinScreen extends React.Component {
             console.log("updating this players arrays to the hosts one")
             this.setState({loading: false})
             this.props.navigation.navigate('Lobby', {screen: 'LobbyScreen', params: {gameData: obj.gameData, playersLeft: obj.playersLeft,
-                                                    playersInLobby: obj.playersInLobby, localPlayer: this.state.localPlayer}})
+                                                    playersInLobby: obj.playersInLobby, localPlayer: this.state.localPlayer, isEdited: false}})
         })
 
     }

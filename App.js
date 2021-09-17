@@ -12,6 +12,7 @@ import * as Color from './global/Color'
 import CreateScreen from './src/screens/Pregame/CreateScreen';
 import JoinScreen from './src/screens/Pregame/JoinScreen';
 import LobbyScreen from './src/screens/Pregame/LobbyScreen';
+import GameSettingsScreen from './src/screens/Pregame/GameSettingsScreen';
 
 
 // Creates stack for the Home screens
@@ -73,6 +74,7 @@ const LobbyStack = () => {
         }}>
         <Lobby.Screen name="LobbyScreen" component={LobbyScreen} />
         <Lobby.Screen name="HowTo" component={HowToScreen} />
+        <Lobby.Screen name="GameSettings" component={GameSettingsScreen} />
     </Lobby.Navigator>
   )
 }

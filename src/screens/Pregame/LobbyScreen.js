@@ -25,8 +25,29 @@ class LobbyScreen extends React.Component {
             modalExitVisible: false,
             modalVisible: false,
             isGoingHome: false,
-            modalMenuVisible: false
+            modalMenuVisible: false,
+            hasBeenEdited: false
         }
+    }
+
+    // Updates the game for the edited game stuff
+    componentDidUpdate() {
+        if (this.props.route.params.isEdited && !this.state.hasBeenEdited) {
+            this.setState({
+                gameData: this.props.route.params.gameData,
+                hasBeenEdited: true,
+            }, () => {
+                this.getPlayersLeft()
+            })
+        }
+    }
+
+    getPlayersLeft = () => {
+        const totalPlayers = this.state.gameData.numPlayers
+        const playersInLobbyLength = this.state.gameData.isCreated ? this.state.playersInLobby.length - 1 : this.state.playersInLobby.length
+        this.setState({
+            playersLeft: totalPlayers - playersInLobbyLength
+        })
     }
 
     componentDidMount() {
@@ -178,6 +199,22 @@ class LobbyScreen extends React.Component {
             }
         } else {
             return <Text style={styles.word}>Waiting for host...</Text>
+        }
+    }
+
+    // If host trys to create a new game
+    newGame = () => {
+        this.setState({modalMenuVisible: false, hasBeenEdited: false})
+        this.props.navigation.navigate("GameSettings", {gameState: 2})
+    }
+
+    // If host trys to edit the game
+    editGame = () => {
+        this.setState({modalMenuVisible: false, hasBeenEdited: false})
+        if (this.state.gameData.isCreated) {
+            this.props.navigation.navigate("GameSettings", {gameState: 0, gameData: this.state.gameData})
+        } else {
+            this.props.navigation.navigate("GameSettings", {gameState: 1})
         }
     }
 

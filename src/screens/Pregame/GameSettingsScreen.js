@@ -13,13 +13,18 @@ import ConfirmationComponent from '../../components/Create/ConfirmationComponent
 import * as Global from '../../../global/Global'
 import SimpleModalComponent from '../../components/Modal/SimpleModalComponent'
 import PremadeSetsComponent from '../../components/Create/PremadeSetsComponent'
+import SaveSettingsComponent from '../../components/Lobby/SaveSettingsComponent'
 
-class CreateScreen extends React.Component {
+
+class GameSettingsScreen extends React.Component {
 
     constructor() {
         super()
         this.state = {
+            gameState: 0,
+            hasLoaded: false,
             loading: false,
+            isEditGame: false,
             status: 0,
             isCreated: false,
             numPlayers: 4,
@@ -31,10 +36,39 @@ class CreateScreen extends React.Component {
             numSubs: 0,
             numTops: 0,
             finalSet: {},
+            code: '',
             currentPlayerName: '',
             modalVisible: false,
             premadeSets: []
         }
+    }
+
+    // Game state:
+    // 0: edit created game
+    // 1: edit premade game
+    // 2: complete new game
+    componentDidMount() {
+        this.setState({
+            gameState: this.props.route.params.gameState,
+            hasLoaded: true
+        }, () => {
+            if (this.state.gameState === 0) {
+                let {gameData} = this.props.route.params
+                this.setState({
+                    numPlayers: gameData.numPlayers,
+                    numGhosts: gameData.numGhosts,
+                    numSubs: gameData.numSubs,
+                    numTops: gameData.numTops,
+                    topic: gameData.topic,
+                    finalSet: gameData.wordSet,
+                    subList: gameData.wordSet.subs,
+                    code: gameData.code,
+                    hostSocketId: Global.socket.id,
+                    isCreated: true
+                })
+            }
+        })
+        this.fetchSets()
     }
 
     // Fetches temp sets
@@ -55,25 +89,8 @@ class CreateScreen extends React.Component {
         })
     }
 
-    componentDidMount() {
-        // In case user cannot connect to the server
-        Global.socket.on('error', function (err) {
-            this.setState({
-                loading: false,
-                modalVisible: true,
-            })
-        });
-        // If room was created successfully, get ready to prepare game
-        Global.socket.on('createRoom', code => {
-            console.log("Room Created successfully: " + code)
-            this.getReadyForGame(code)
-            
-        }) 
-        this.fetchSets()
-    }
-
     // Gets the user ready to create the game, by setting up game details and their own localplayer data
-    getReadyForGame = (code) => {
+    saveGame = () => {
         const starterData = {
             numPlayers: this.state.numPlayers,
             numGhosts: this.state.numGhosts,
@@ -81,34 +98,15 @@ class CreateScreen extends React.Component {
             numTops: this.state.numTops,
             topic: this.state.topic,
             wordSet: this.state.finalSet,
-            code: code,
+            code: this.state.code,
             hostSocketId: Global.socket.id,
             isCreated: this.state.isCreated
         }
-        // Create player array and add the host as the first player
-        let playersInLobby = []
-        let player = {
-            id: uuid.v4(),
-            socketId: Global.socket.id,
-            name: this.state.currentPlayerName,
-            isReady: false,
-            isHost: true,
-            canPlay: false,
-            isGhost: false,
-            word: '',
-            isTopic: false,
-            votes: 0,
-            isDead: false,
-        }
-        if (!this.state.isCreated) {
-            player.canPlay = true
-        } 
-        playersInLobby.push(player)
-        const playersLeft = starterData['isCreated'] ? starterData['numPlayers'] : starterData['numPlayers'] - 1
+
         this.setState({
             loading: false
         })
-        this.props.navigation.navigate('Lobby', {screen: 'LobbyScreen',  params: {gameData: starterData, playersLeft: playersLeft, playersInLobby: playersInLobby, localPlayer: player, isEdited: false}})
+        this.props.navigation.navigate('Lobby', {screen: 'LobbyScreen',  params: {gameData: starterData, isEdited: true }})
     }
 
     // Update number of players value
@@ -152,18 +150,34 @@ class CreateScreen extends React.Component {
         set.subs = this.state.subList
         set.topic = this.state.topic
         set.userCompleted = false
-        this.setState({
-            finalSet: set,
-            status: 5
-        })
+        if (this.state.gameState === 0) {
+            this.setState({
+                finalSet: set,
+                status: 4
+            })
+        } else {
+            this.setState({
+                finalSet: set,
+                status: 5
+            })
+        }
+
     }
 
     // Selects the set from the list and makes the set
     selectSet = (set) => {
-        this.setState({
-            finalSet: set,
-            status: 12
-        })
+        if (this.state.gameState === 1) {
+            this.setState({
+                finalSet: set,
+                status: 1
+            })
+        } else {
+            this.setState({
+                finalSet: set,
+                status: 12
+            })
+        }
+
     }
 
     // Sets the topic of the game 
@@ -179,12 +193,6 @@ class CreateScreen extends React.Component {
     // Sets the current sub of the game
     setCurrentSub = (sub) => {
         this.setState({currentSub: sub})
-    }
-
-    
-    // Set the current players name
-    updateCurrentPlayerName = (n) => {
-        this.setState({currentPlayerName: n})
     }
 
     // Adds the sub to the temp sublist
@@ -226,14 +234,30 @@ class CreateScreen extends React.Component {
             subs += 1
             count += 1
         }
-        this.setState({
-            numSubs: subs,
-            numTops: tops,
-            subsLeft: subs,
-        }, () => {
-            this.nextPage()
-        })
-       
+        if (this.state.gameState === 2) {
+            this.setState({
+                numSubs: subs,
+                numTops: tops,
+                subsLeft: subs,
+            }, () => {
+                this.nextPage()
+            })
+        } else {
+            let subsLeftTemp = subs - this.state.subList.length
+            if (subsLeftTemp < 0) {
+                subsLeftTemp = subs
+                this.setState({
+                    subList: []
+                })
+            }
+            this.setState({
+                numSubs: subs,
+                numTops: tops,
+                subsLeft: subsLeftTemp,
+            }, () => {
+                this.nextPage()
+            })
+        }
     }
 
     // Sends user back to a page
@@ -244,22 +268,50 @@ class CreateScreen extends React.Component {
             } else {
                 this.setState({status: this.state.status - 1})
             }
-        } else {
-            this.props.navigation.navigate("Home", {'screen': 'Main'})
         }
     }
 
-    // Sends the ready to create game signal to the server
-    createGame = () => {
-        this.setState({
-            loading: true,
-        }, () => {
-            Global.socket.emit('createRoom')
-        })
+
+
+    // Figures out which order of screens to show
+    organizeScreens = () => {
+        if (this.state.gameState === 0) {
+            return this.renderEditCreated()
+        }
+        else if (this.state.gameState === 1) {
+            return this.renderEditPremade()
+        }
+        else {
+            return this.renderNewGame()
+        }
     }
 
-    // Renders the screens to show
-    renderScreens = () => {
+    renderEditCreated = () => {
+        switch (this.state.status) {
+            case 0:
+                return <NumberPlayersComponent changeVal={this.updateNumPlayers} num={this.state.numPlayers} title={'Players'} nextPage={this.nextPage} />
+            case 1:
+                return <NumberPlayersComponent changeVal={this.updateNumGhosts} num={this.state.numGhosts} title={'Ghosts'} nextPage={this.nextPage} />
+            case 2:
+                return <WordComponent topic={this.state.topic} setTopic={this.setTopic} nextPage={this.prepareForSub} />
+            case 3:
+                return <SubComponent createSet={this.createSet} topic={this.state.topic} currentSub={this.state.currentSub} setCurrentSub={this.setCurrentSub} 
+                                addToSubList={this.addToSubList} subList={this.state.subList} subsLeft={this.state.subsLeft} deleteSub={this.deleteSub} />
+            case 4:
+                return <SaveSettingsComponent saveGame={this.saveGame} />
+        }
+    }
+
+    renderEditPremade = () => {
+        switch (this.state.status) {
+            case 0:
+                return <PremadeSetsComponent premadeSets={this.state.premadeSets} selectSet={this.selectSet} />
+            case 1:
+                return <SaveSettingsComponent saveGame={this.saveGame} />
+        }
+    }
+
+    renderNewGame = () => {
         switch (this.state.status) {
             case 0:
                 return <OpeningComponent isCreatingNewSet={this.isCreatingNewSet} />
@@ -271,27 +323,33 @@ class CreateScreen extends React.Component {
                 return <WordComponent topic={this.state.topic} setTopic={this.setTopic} nextPage={this.prepareForSub} />
             case 4:
                 return <SubComponent createSet={this.createSet} topic={this.state.topic} currentSub={this.state.currentSub} setCurrentSub={this.setCurrentSub} 
-                              addToSubList={this.addToSubList} subList={this.state.subList} subsLeft={this.state.subsLeft} deleteSub={this.deleteSub} />
+                                addToSubList={this.addToSubList} subList={this.state.subList} subsLeft={this.state.subsLeft} deleteSub={this.deleteSub} />
             case 5:
             case 12:
-                return <ConfirmationComponent gameFunction={this.createGame} currentPlayerName={this.state.currentPlayerName} updateCurrentPlayerName={this.updateCurrentPlayerName} />
+                return <SaveSettingsComponent saveGame={this.saveGame} />
             case 11:
                 return <PremadeSetsComponent premadeSets={this.state.premadeSets} selectSet={this.selectSet} />
         }
     }
 
     render() {
+        if (!this.state.hasLoaded) {
+            return <LoadingIndicator loading={!this.state.hasLoaded} />
+        }
         return (
             <View style={styles.container}>
                 <BackgroundImage />
                 <LoadingIndicator loading={this.state.loading} />
+                {
+                    this.state.status !== 0
+                    ?   <TouchableOpacity style={{zIndex: 10}} onPress={this.backButton} >
+                            <Ionicons name="arrow-back-sharp" style={styles.back} />
+                        </TouchableOpacity>
+                    : null
+                }
+
                 <SafeAreaView style={styles.safeView}>
-                    <TouchableOpacity onPress={this.backButton} >
-                        <Ionicons name="arrow-back-sharp" style={styles.back} />
-                    </TouchableOpacity>
-                    {this.renderScreens()}
-                    <SimpleModalComponent modalVisible={this.state.modalVisible} setModalVisible={this.setModalVisible} 
-                                          text="Unable to connect to the server. Please try again!" buttonText={"OK"} />
+                    {this.organizeScreens()}
                 </SafeAreaView>
             </View>
         )
@@ -310,9 +368,9 @@ const styles = StyleSheet.create({
         fontSize: Dimensions.get('window').height * .04,
         color: Color.TEXT,
         position: 'absolute',
-        top: 0,
+        top: Dimensions.get('window').height * .01,
         left: Dimensions.get('window').width * .03,
     },
 })
 
-export default CreateScreen
+export default GameSettingsScreen
