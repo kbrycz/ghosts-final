@@ -15,7 +15,7 @@ class HowToScreen extends React.Component {
         return (
             <View>
                 <CircleComponent />
-                <ScrollView style={{marginBottom: Dimensions.get('window').height * .05, marginTop: Dimensions.get('window').height * .05}}>
+                <ScrollView style={{marginBottom: Dimensions.get('window').height * .1, marginTop: Dimensions.get('window').height * .05}}>
                     <Text style={styles.headerText}>How to Play</Text>
                     <Text style={styles.sub}>Overview</Text>
                     <Text style={styles.p}>Ghosts is a multiplayer party game that works best for players in the same room. 

@@ -3,7 +3,7 @@ import {View, StyleSheet, Text, Dimensions, TouchableOpacity, TextInput, Alert} 
 import SimpleModalComponent from '../Modal/SimpleModalComponent'
 import * as Color from '../../../global/Color'
 
-const ConfirmationComponent = ({createGame, currentPlayerName, updateCurrentPlayerName,}) => {
+const ConfirmationComponent = ({gameFunction, currentPlayerName, updateCurrentPlayerName,}) => {
     
     const key = Platform.OS === 'ios' ? 'done' : 'next' 
 
@@ -12,7 +12,7 @@ const ConfirmationComponent = ({createGame, currentPlayerName, updateCurrentPlay
 
     const goToLobby = () => {
         if (currentPlayerName.length > 1) {
-            createGame()
+            gameFunction()
         } else {
             setText('Player name is too short. Make sure it is at least 2 characters.')
             setModalVisible(true)

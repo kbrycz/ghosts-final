@@ -1,0 +1,325 @@
+import React from 'react'
+import {View, StyleSheet, Dimensions, TouchableOpacity, Text, SafeAreaView, FlatList} from 'react-native'
+import * as Color from '../../../global/Color'
+import * as Global from '../../../global/Global'
+import { FontAwesome5, Feather } from '@expo/vector-icons';
+import Clipboard from 'expo-clipboard';
+import PlayerListComponent from '../../components/Lobby/PlayerListComponent';
+import BackgroundImage from '../../components/General/BackgroundImage';
+import LoadingIndicator from '../../components/General/LoadingIndicator';
+import QuitModalComponent from '../../components/Modal/QuitModalComponent';
+import SimpleModalComponent from '../../components/Modal/SimpleModalComponent';
+import HostMenuModalComponent from '../../components/Modal/HostMenuModalComponent';
+
+class LobbyScreen extends React.Component {
+
+    constructor() {
+        super()
+        this.state = {
+            loading: false,
+            loadingContent: true,
+            gameData: {},
+            playersInLobby: [],
+            playersLeft: 0,
+            localPlayer: {},
+            modalExitVisible: false,
+            modalVisible: false,
+            isGoingHome: false,
+            modalMenuVisible: false
+        }
+    }
+
+    componentDidMount() {
+
+        // Host is adding the player to their own players array and sending it to server for everyone
+        Global.socket.on('hostAddPlayer', (player) => {
+            console.log("Adding player " + player.name + "to lobby")
+            this.setState({
+                playersInLobby: [...this.state.playersInLobby, player],
+                playersLeft: this.state.playersLeft - 1
+            }, () => {
+                const obj = {playersInLobby: this.state.playersInLobby, players: this.state.players, gameData: this.state.gameData, playersLeft: this.state.playersLeft}
+                Global.socket.emit("hostUpdatePlayerToLobby", obj)
+            })
+        })
+
+        // Updates the new players array with new player in it
+        Global.socket.on('updatePlayersArray', (obj) => {
+            console.log("Updating players arrays for all other players in the lobby when user joins")
+            this.setState({
+                playersInLobby: obj.playersInLobby,
+                playersLeft: obj.playersLeft
+            })
+        })
+
+        // Updates all users with a new players ready up sign
+        Global.socket.on('updateReadyUp', (playersInLobby_in) => {
+            console.log("Updating players array for a ready up")
+            this.setState({
+                playersInLobby: playersInLobby_in,
+            })
+        })
+
+        // Lets the lobby know that the host has ended the game
+        Global.socket.on('hostEndedGame', () => {
+            console.log("Host ended game, leaving lobby")
+            this.setState({
+                modalVisible: true,
+                isGoingHome: true
+            })
+            Global.socket.disconnect()
+        })
+
+        // Lets all the other players know that a player left the lobby
+        Global.socket.on('playerLeftLobby', (id) => {
+            console.log("Player left game. Removing the id " + id)
+            let tempPlayers = []
+            for (let i = 0; i < this.state.playersInLobby.length; ++i) {
+                if (this.state.playersInLobby[i].socketId !== id) {
+                    tempPlayers.push(this.state.playersInLobby[i])
+                } 
+            }
+            this.setState({
+                playersInLobby: tempPlayers
+            })
+        })
+
+        // Initializes all of the game data
+        this.setState({
+            gameData: this.props.route.params.gameData,
+            playersInLobby: this.props.route.params.playersInLobby,
+            playersLeft: this.props.route.params.playersLeft,
+            localPlayer: this.props.route.params.localPlayer,
+        }, () => this.setState({loadingContent: false}))
+    }
+
+    // Sends server signal that player has readied up. Creates whole new playersInLobby array
+    readyUp = (id) => {
+        let tempArray = []
+        for (let i = 0; i < this.state.playersInLobby.length; ++i) {
+            let p = this.state.playersInLobby[i]
+            if (this.state.playersInLobby[i].id === id) {
+                p.isReady = true
+            }
+            tempArray.push(this.state.playersInLobby[i])
+        }
+
+        this.setState({
+            playersInLobby: tempArray
+        }, () => {
+            const obj = {code: this.state.gameData.code, playersInLobby: tempArray}
+            Global.socket.emit("updateReadyUp", obj)
+        })
+
+    }
+
+    // Copies the game code from the screen
+    copyCode = () => {
+        Clipboard.setString(this.state.gameData.roomName)
+    }
+
+    // Sets the quitting modal variable
+    setModalExitVisible = (isVis) => {
+        this.setState({modalExitVisible: isVis, modalMenuVisible: false})
+    }
+
+    // Sets the host menu variable
+    setModalMenuVisible = (isVis) => {
+        this.setState({modalMenuVisible: isVis, modalExitVisible: false})
+    }
+
+    // Returns the user to the home screen when the host quits
+    closeModal = () => {
+        if (this.state.isGoingHome) {
+            this.props.navigation.navigate('Home')
+        } else {
+            this.setModalVisible(false)
+        }
+        
+    }
+    
+    // Gets the index of the player based on their id
+    getIndexOfPlayer = (id) => {
+        for (let i = 0; i < this.state.playersInLobby.length; ++i) {
+            if (id === this.state.playersInLobby[i].id) {
+                return i
+            }
+        }
+        return 0
+    }
+
+    // Triggered if the user hits the back button. Checks whether it is host and handles accordingly
+    back = () => {
+        Global.socket.emit('leavingGame');
+        this.props.navigation.navigate('Home')
+    }
+
+    // Figures out what modal to open when user clicks on menu based on host status
+    menuButton = () => {
+        if (!this.state.localPlayer.isHost) {
+            this.setState({modalExitVisible: true})
+        } else {
+            this.setState({modalMenuVisible: true})
+        }
+    }
+
+    // Renders the necessary bottom button or waiting text
+    renderElement = () => {
+        const index = this.getIndexOfPlayer(this.state.localPlayer.id)
+        if (this.state.playersInLobby[index].isHost) {
+            if (this.state.playersLeft > 0) {
+                return <Text style={styles.word}>Need {this.state.playersLeft} more to start!</Text>
+            } else {
+                return (
+                    <TouchableOpacity style={styles.startButton} onPress={this.startGame}>
+                        <Text style={styles.word2}>Start game</Text>
+                    </TouchableOpacity>
+                )
+            }
+        } else {
+            return <Text style={styles.word}>Waiting for host...</Text>
+        }
+    }
+
+    render() {
+
+        if (this.state.loadingContent) {
+            return <LoadingIndicator loading={this.state.loadingContent} />
+        }
+
+        return (
+            <>
+                <BackgroundImage />
+                <View style={styles.container}>
+                    <LoadingIndicator loading={this.state.loading} />
+                    <SafeAreaView style={styles.safe}>
+                        <TouchableOpacity style={{zIndex: 10}} onPress={this.menuButton} >
+                            <Feather name="menu" style={styles.menu} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{zIndex: 10}} onPress={() => this.props.navigation.navigate('HowTo')} >
+                            <Feather name="info" style={styles.rules} />
+                        </TouchableOpacity>
+                        <View style={styles.headerContainer}>
+                            <Text style={styles.header}>Game Lobby</Text>
+                        </View>
+                        <FlatList
+                            data={this.state.playersInLobby}
+                            renderItem={({ item }) => (
+                                <PlayerListComponent player={item} localPlayerId={this.state.localPlayer.id} readyUp={this.readyUp} />
+                            )}
+                            keyExtractor={item => item.id.toString()}
+                            style={styles.list} />
+                        <TouchableOpacity onPress={this.copyCode} style={styles.codeContainer}>
+                            <Feather name="copy" style={styles.icon} />
+                            <Text style={styles.code}>{this.state.gameData.code}</Text>
+                        </TouchableOpacity>
+                        <View style={styles.header2}>
+                        {
+                            this.renderElement()
+                        }
+                        </View>
+                        <QuitModalComponent modalExitVisible={this.state.modalExitVisible} setModalExitVisible={this.setModalExitVisible} 
+                                            text="Are you sure you want to leave? You will be removed from the lobby." func={this.back} />
+                        <SimpleModalComponent modalVisible={this.state.modalVisible} setModalVisible={this.closeModal} 
+                                              text={"The host has ended the game. Returning to lobby."} buttonText={"OK"} />
+                        <HostMenuModalComponent modalVisible={this.state.modalMenuVisible} setModalVisible={this.setModalMenuVisible} 
+                                                editGame={this.editGame} newGame={this.newGame} quit={this.setModalExitVisible} />
+                    </SafeAreaView>
+                </View>
+            </>
+        )
+    }
+    
+}
+
+const styles = StyleSheet.create({
+    container: {
+        height: Dimensions.get('window').height,
+    },
+    headerContainer: {
+        borderBottomWidth: 2,
+        borderColor: 'rgba(144, 156, 216, .2)',
+    },
+    header: {
+        width: Dimensions.get('window').width,
+        padding: Dimensions.get('window').height * .03,
+        textAlign: 'center',
+        color: Color.TEXT,
+        textShadowColor: 'rgba(0, 0, 0, 0.9)',
+        textShadowOffset: {width: -2, height: 2},
+        textShadowRadius: 10,
+        letterSpacing: Dimensions.get('window').width * .01,
+        textTransform: 'uppercase',
+        fontSize: Dimensions.get('window').width * .08,
+        fontFamily: 'PatrickHand',
+
+    },
+    header2: {
+        width: Dimensions.get('window').width,
+        padding: Dimensions.get('window').height * .02,
+    },
+    word: {
+        color: Color.TEXT,
+        textShadowColor: 'rgba(0, 0, 0, 0.9)',
+        textShadowOffset: {width: -2, height: 2},
+        textShadowRadius: 10,
+        fontSize: Dimensions.get('window').height * .03,
+        fontFamily: 'PatrickHand',
+        textAlign: 'center',
+    },
+    word2: {
+        color: Color.TEXT,
+        textShadowColor: 'rgba(0, 0, 0, 0.9)',
+        textShadowOffset: {width: -2, height: 2},
+        textShadowRadius: 10,
+        fontSize: Dimensions.get('window').height * .03,
+        fontFamily: 'PatrickHand',
+        textAlign: 'center',
+    },
+    container: {
+        marginTop: Dimensions.get('window').height * .04,
+        marginBottom: Dimensions.get('window').height * .3,
+    },
+
+    list: {
+        height: Dimensions.get('window').height * .65,
+        borderBottomWidth: 3,
+        borderColor: 'rgba(144, 156, 216, .2)',
+    },
+    codeContainer: {
+        flexDirection: 'row',
+        width: Dimensions.get('window').width * .4,
+        marginLeft: Dimensions.get('window').width * .3,
+        marginRight: Dimensions.get('window').width * .3,
+        justifyContent: 'center',
+        marginTop: Dimensions.get('window').height * .01,
+    },
+    code: {
+        color: Color.TEXT,
+        fontSize: Dimensions.get('window').height * .04,
+        fontFamily: 'PatrickHand',
+    },
+    icon: {
+        textAlign: 'right',
+        marginRight: Dimensions.get('window').width * .05,
+        fontSize: Dimensions.get('window').height * .025,
+        color: Color.TEXT,
+        marginTop: Dimensions.get('window').height * .015,
+    },
+    menu: {
+        fontSize: Dimensions.get('window').height * .03,
+        color: Color.TEXT,
+        position: 'absolute',
+        top: 5,
+        left: Dimensions.get('window').width * .04,
+    },
+    rules: {
+        fontSize: Dimensions.get('window').height * .03,
+        color: Color.TEXT,
+        position: 'absolute',
+        top: 5,
+        right: Dimensions.get('window').width * .04,
+    },
+})
+
+export default LobbyScreen

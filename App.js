@@ -11,6 +11,7 @@ import { Asset } from 'expo-asset';
 import * as Color from './global/Color'
 import CreateScreen from './src/screens/Pregame/CreateScreen';
 import JoinScreen from './src/screens/Pregame/JoinScreen';
+import LobbyScreen from './src/screens/Pregame/LobbyScreen';
 
 
 // Creates stack for the Home screens
@@ -59,6 +60,23 @@ const PregameStack = () => {
     </Pregame.Navigator>
   )
 }
+
+// Creates stack for the Game screens
+const Lobby = createStackNavigator();
+const LobbyStack = () => {
+  return (
+    <Lobby.Navigator 
+        initialRouteName="LobbyScreen"
+        screenOptions={{
+          headerShown: false,
+          presentation: 'modal'
+        }}>
+        <Lobby.Screen name="LobbyScreen" component={LobbyScreen} />
+        <Lobby.Screen name="HowTo" component={HowToScreen} />
+    </Lobby.Navigator>
+  )
+}
+
 
 
 const RootStack = createStackNavigator();
@@ -122,6 +140,7 @@ class App extends React.Component {
               }}>
               <RootStack.Screen name='Home' component={HomeStack} />
               <RootStack.Screen name='Pregame' component={PregameStack} />
+              <RootStack.Screen name="Lobby" component={LobbyStack} />
            </RootStack.Navigator>
           </NavigationContainer>  
       );

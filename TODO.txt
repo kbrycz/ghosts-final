@@ -1,14 +1,12 @@
 ************TODO NEXT TIME*********** 
-- Get join screen caught up
-- Get the server set up with the join and create game stuff
-- Get the lobby up and running 
+- Get the host edit/new game feature up and running (page)
 
 ************BACKLOG***********
 
 
 - Fix up the store screen
 - Be able to click out text input to close it
-
+- Make it so the join name screen says "you are about to join Karl's game!" and fix it on createGame
 
 
 

@@ -43,10 +43,14 @@ const styles = StyleSheet.create({
         marginTop: Dimensions.get('window').height * .04,
     },
     icon: {
-        fontSize: Dimensions.get('window').height * .04,
+        fontSize: Dimensions.get('window').height * .03,
         color: '#dbdff3',
     },
     headerContainer: {
+        borderBottomWidth: 3,
+        borderColor: 'rgba(144, 156, 216, .2)',
+    },
+    list: {
         borderBottomWidth: 3,
         borderColor: 'rgba(144, 156, 216, .2)',
     },
@@ -60,7 +64,7 @@ const styles = StyleSheet.create({
         textShadowRadius: 10,
         letterSpacing: Dimensions.get('window').width * .01,
         textTransform: 'uppercase',
-        fontSize: Dimensions.get('window').width * .08,
+        fontSize: Dimensions.get('window').height * .04,
         fontFamily: 'NewTegomin',
         borderBottomWidth: 2,
         borderColor: '#fff'

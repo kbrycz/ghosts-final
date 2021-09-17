@@ -37,6 +37,7 @@ class CreateScreen extends React.Component {
         }
     }
 
+    // Fetches temp sets
     fetchSets = () =>  {
         let temp = []
         for (let i = 0; i < 15; ++i) {
@@ -63,11 +64,52 @@ class CreateScreen extends React.Component {
             })
         });
         // If room was created successfully, get ready to prepare game
-        Global.socket.on('createRoom', obj => {
-            console.log("Room Created successfully: " + obj.roomName)
-            this.gatherDataFromServer(obj.roomName)
+        Global.socket.on('createRoom', code => {
+            console.log("Room Created successfully: " + code)
+            this.getReadyForGame(code)
+            
         }) 
         this.fetchSets()
+    }
+
+    // Gets the user ready to create the game, by setting up game details and their own localplayer data
+    getReadyForGame = (code) => {
+        const starterData = {
+            numPlayers: this.state.numPlayers,
+            numGhosts: this.state.numGhosts,
+            numSubs: this.state.numSubs,
+            numTops: this.state.numTops,
+            topic: this.state.topic,
+            wordSet: this.state.finalSet,
+            code: code,
+            hostSocketId: Global.socket.id,
+            isCreated: this.state.isCreated
+        }
+        // Create player array and add the host as the first player
+        let playersInLobby = []
+        let player = {
+            id: uuid.v4(),
+            socketId: Global.socket.id,
+            name: this.state.currentPlayerName,
+            isReady: false,
+            isHost: true,
+            canPlay: false,
+            isGhost: false,
+            word: '',
+            isTopic: false,
+            votes: 0,
+            isDead: false,
+        }
+        if (!this.state.isCreated) {
+            player.canPlay = true
+            playersInLobby.push(player)
+        }
+
+        const playersLeft = starterData['isCreated'] ? starterData['numPlayers'] : starterData['numPlayers'] - 1
+        this.setState({
+            loading: false
+        })
+        this.props.navigation.navigate('Lobby', {screen: 'LobbyScreen',  params: {gameData: starterData, playersLeft: playersLeft, playersInLobby: playersInLobby, localPlayer: player}})
     }
 
     // Update number of players value
@@ -233,7 +275,7 @@ class CreateScreen extends React.Component {
                               addToSubList={this.addToSubList} subList={this.state.subList} subsLeft={this.state.subsLeft} deleteSub={this.deleteSub} />
             case 5:
             case 12:
-                return <ConfirmationComponent createGame={this.createGame} currentPlayerName={this.state.currentPlayerName} updateCurrentPlayerName={this.updateCurrentPlayerName} />
+                return <ConfirmationComponent gameFunction={this.createGame} currentPlayerName={this.state.currentPlayerName} updateCurrentPlayerName={this.updateCurrentPlayerName} />
             case 11:
                 return <PremadeSetsComponent premadeSets={this.state.premadeSets} selectSet={this.selectSet} />
         }
@@ -264,22 +306,6 @@ const styles = StyleSheet.create({
     },
     safeView: {
         height: Dimensions.get('window').height
-    },
-    title: {
-        width: Dimensions.get('window').width * .8,
-        marginLeft: Dimensions.get('window').width * .1,
-        marginRight: Dimensions.get('window').width * .1,
-        marginTop: Dimensions.get('window').height * .08,
-        marginBottom: Dimensions.get('window').height * .06,
-        textAlign: 'center',
-        color: Color.TEXT,
-        textShadowColor: 'rgba(0, 0, 0, 0.9)',
-        textShadowOffset: {width: -2, height: 2},
-        textShadowRadius: 10,
-        letterSpacing: Dimensions.get('window').height * .01,
-        textTransform: 'uppercase',
-        fontSize: Dimensions.get('window').height * .05,
-        fontFamily: 'PatrickHand'
     },
     back: {
         fontSize: Dimensions.get('window').height * .04,
