@@ -13,6 +13,7 @@ import CreateScreen from './src/screens/Pregame/CreateScreen';
 import JoinScreen from './src/screens/Pregame/JoinScreen';
 import LobbyScreen from './src/screens/Pregame/LobbyScreen';
 import GameSettingsScreen from './src/screens/Pregame/GameSettingsScreen';
+import GameScreen from './src/screens/Game/GameScreen';
 
 
 // Creates stack for the Home screens
@@ -34,18 +35,18 @@ const HomeStack = () => {
 }
 
 // Creates stack for the Game screens
-// const Game = createStackNavigator();
-// const GameStack = () => {
-//   return (
-//     <Game.Navigator 
-//         initialRouteName="Gameplay"
-//         screenOptions={{
-//           headerShown: false,
-//         }}>
-//         <Game.Screen name="Gameplay" component={GameScreen} />
-//     </Game.Navigator>
-//   )
-// }
+const Game = createStackNavigator();
+const GameStack = () => {
+  return (
+    <Game.Navigator 
+        initialRouteName="Gameplay"
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Game.Screen name="Gameplay" component={GameScreen} />
+    </Game.Navigator>
+  )
+}
 
 // Creates stack for the Game screens
 const Pregame = createStackNavigator();
@@ -55,9 +56,11 @@ const PregameStack = () => {
         initialRouteName="Create"
         screenOptions={{
           headerShown: false,
+          presentation: 'modal'
         }}>
         <Pregame.Screen name="Create" component={CreateScreen} />
         <Pregame.Screen name="Join" component={JoinScreen} />
+        <Pregame.Screen name="StoreCreate" component={StoreScreen} />
     </Pregame.Navigator>
   )
 }
@@ -75,6 +78,7 @@ const LobbyStack = () => {
         <Lobby.Screen name="LobbyScreen" component={LobbyScreen} />
         <Lobby.Screen name="HowTo" component={HowToScreen} />
         <Lobby.Screen name="GameSettings" component={GameSettingsScreen} />
+        <Lobby.Screen name="StoreLobby" component={StoreScreen} />
     </Lobby.Navigator>
   )
 }
@@ -140,6 +144,7 @@ class App extends React.Component {
                 headerShown: false,
                 animationEnabled: false
               }}>
+              <RootStack.Screen name="Game" component={GameStack} />
               <RootStack.Screen name='Home' component={HomeStack} />
               <RootStack.Screen name='Pregame' component={PregameStack} />
               <RootStack.Screen name="Lobby" component={LobbyStack} />

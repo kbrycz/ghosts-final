@@ -5,7 +5,7 @@ import { Feather } from '@expo/vector-icons';
 import PremadeItemComponent from './PremadeItemComponent';
 import * as Color from '../../../global/Color'
 
-const PremadeSetsComponent = ({premadeSets, selectSet}) => {
+const PremadeSetsComponent = ({premadeSets, selectSet, goToStore}) => {
 
     return (
         <View style={styles.container}>
@@ -19,14 +19,9 @@ const PremadeSetsComponent = ({premadeSets, selectSet}) => {
                 )}
                 keyExtractor={item => item.id.toString()}
                 style={styles.list} />
-                <View style={styles.iconView}>
-                    <TouchableOpacity >
-                        <FontAwesome5 name="store" style={styles.icon}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity >
-                        <Feather name="book-open" style={styles.icon} />
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity style={styles.storeButtonView} onPress={goToStore}>
+                    <Text style={styles.storeButton}>Buy more sets here!</Text>
+                </TouchableOpacity>
         </View>
 
     )
@@ -34,13 +29,17 @@ const PremadeSetsComponent = ({premadeSets, selectSet}) => {
 
 const styles = StyleSheet.create({
 
-    iconView: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: Dimensions.get('window').width * .5,
-        marginLeft: Dimensions.get('window').width * .25,
-        marginRight: Dimensions.get('window').width * .25,
+    storeButtonView: {
         marginTop: Dimensions.get('window').height * .04,
+    },
+    storeButton: {
+        color: Color.TEXT,
+        textShadowColor: 'rgba(0, 0, 0, 0.9)',
+        textShadowOffset: {width: -2, height: 2},
+        textShadowRadius: 10,
+        fontSize: Dimensions.get('window').height * .03,
+        fontFamily: 'PatrickHand',
+        textAlign: 'center',
     },
     icon: {
         fontSize: Dimensions.get('window').height * .03,
@@ -53,6 +52,7 @@ const styles = StyleSheet.create({
     list: {
         borderBottomWidth: 3,
         borderColor: 'rgba(144, 156, 216, .2)',
+        height: Dimensions.get('window').height * .6,
     },
     header: {
         width: Dimensions.get('window').width,
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
         letterSpacing: Dimensions.get('window').width * .01,
         textTransform: 'uppercase',
         fontSize: Dimensions.get('window').height * .04,
-        fontFamily: 'NewTegomin',
+        fontFamily: 'PatrickHand',
         borderBottomWidth: 2,
         borderColor: '#fff'
     },

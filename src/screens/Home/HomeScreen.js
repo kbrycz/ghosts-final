@@ -55,8 +55,9 @@ class HomeScreen extends React.Component {
 
     render() {
         return (
+            <>
+            <BackgroundImage />
             <View style={styles.container}>
-                <BackgroundImage />
                 <LoadingIndicator loading={this.state.loading} />
                 <SafeAreaView>
                     <Text style={styles.title}>Ghosts</Text>
@@ -86,7 +87,7 @@ class HomeScreen extends React.Component {
                 </SafeAreaView>
                 
             </View>
-            
+            </>
         )
     }
     

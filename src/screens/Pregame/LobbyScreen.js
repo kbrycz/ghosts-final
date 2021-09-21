@@ -1,9 +1,8 @@
 import React from 'react'
-import {View, StyleSheet, Dimensions, TouchableOpacity, Text, SafeAreaView, FlatList} from 'react-native'
+import {View, StyleSheet, Dimensions, TouchableOpacity, Text, SafeAreaView, FlatList, Clipboard} from 'react-native'
 import * as Color from '../../../global/Color'
 import * as Global from '../../../global/Global'
 import { FontAwesome5, Feather } from '@expo/vector-icons';
-import Clipboard from 'expo-clipboard';
 import PlayerListComponent from '../../components/Lobby/PlayerListComponent';
 import BackgroundImage from '../../components/General/BackgroundImage';
 import LoadingIndicator from '../../components/General/LoadingIndicator';
@@ -26,21 +25,16 @@ class LobbyScreen extends React.Component {
             modalVisible: false,
             isGoingHome: false,
             modalMenuVisible: false,
-            hasBeenEdited: false
+            hasBeenEdited: false,
+            code: '',
+            modalText: ''
         }
     }
 
-    // Updates the game for the edited game stuff
-    componentDidUpdate() {
-        if (this.props.route.params.isEdited && !this.state.hasBeenEdited) {
-            this.setState({
-                gameData: this.props.route.params.gameData,
-                hasBeenEdited: true,
-            }, () => {
-                this.getPlayersLeft()
-            })
-        }
+    componentWillUnmount() {
+        this._unsubscribe();
     }
+    
 
     getPlayersLeft = () => {
         const totalPlayers = this.state.gameData.numPlayers
@@ -51,6 +45,28 @@ class LobbyScreen extends React.Component {
     }
 
     componentDidMount() {
+
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            console.log("focused")
+            if (this.props.route.params.isEdited && !this.state.hasBeenEdited) {
+                console.log("Updating values")
+                this.setState({
+                    gameData: this.props.route.params.gameData,
+                    hasBeenEdited: true,
+                }, () => {
+                    this.getPlayersLeft()
+                })
+            }
+          });
+
+        // In case user cannot connect to the server
+        Global.socket.on('error', function (err) {
+            this.setState({
+                loading: false,
+                modalVisible: true,
+                modalText: 'Unable to connect to the server. Please try again!'
+            })
+        });
 
         // Host is adding the player to their own players array and sending it to server for everyone
         Global.socket.on('hostAddPlayer', (player) => {
@@ -86,7 +102,8 @@ class LobbyScreen extends React.Component {
             console.log("Host ended game, leaving lobby")
             this.setState({
                 modalVisible: true,
-                isGoingHome: true
+                isGoingHome: true,
+                modalText: 'The host has ended the game. Returning to lobby.'
             })
             Global.socket.disconnect()
         })
@@ -105,12 +122,21 @@ class LobbyScreen extends React.Component {
             })
         })
 
+        // Host has created the game, ready to start it
+        Global.socket.on('startGame', (obj) => {
+            console.log("Game has been created. Updating player arrays and then starting...")
+            this.setState({loading: false})
+            this.props.navigation.navigate("Game", {screen: 'Gameplay', params: {gameData: obj.gameData, players: obj.players, 
+                                                    playersInLobby: this.state.playersInLobby, localPlayer: this.state.localPlayer}})
+        })   
+
         // Initializes all of the game data
         this.setState({
             gameData: this.props.route.params.gameData,
             playersInLobby: this.props.route.params.playersInLobby,
             playersLeft: this.props.route.params.playersLeft,
             localPlayer: this.props.route.params.localPlayer,
+            code: this.props.route.params.gameData.code
         }, () => this.setState({loadingContent: false}))
     }
 
@@ -136,7 +162,7 @@ class LobbyScreen extends React.Component {
 
     // Copies the game code from the screen
     copyCode = () => {
-        Clipboard.setString(this.state.gameData.roomName)
+        Clipboard.setString(this.state.gameData.code)
     }
 
     // Sets the quitting modal variable
@@ -218,6 +244,21 @@ class LobbyScreen extends React.Component {
         }
     }
 
+    // Start the game and notifiy the server
+    startGame = () => {
+        this.setState({loading: true})
+        let tempPlayers = this.state.playersInLobby.slice()
+        if (this.state.gameData.isCreated) {
+            tempPlayers.splice(0, 1)
+        }
+        let obj = {
+            code: this.state.code,
+            gameData: this.state.gameData,
+            players: tempPlayers
+        }
+        Global.socket.emit('startGame', obj)
+    }
+
     render() {
 
         if (this.state.loadingContent) {
@@ -248,7 +289,7 @@ class LobbyScreen extends React.Component {
                             style={styles.list} />
                         <TouchableOpacity onPress={this.copyCode} style={styles.codeContainer}>
                             <Feather name="copy" style={styles.icon} />
-                            <Text style={styles.code}>{this.state.gameData.code}</Text>
+                            <Text style={styles.code}>{this.state.code}</Text>
                         </TouchableOpacity>
                         <View style={styles.header2}>
                         {
@@ -256,9 +297,9 @@ class LobbyScreen extends React.Component {
                         }
                         </View>
                         <QuitModalComponent modalExitVisible={this.state.modalExitVisible} setModalExitVisible={this.setModalExitVisible} 
-                                            text="Are you sure you want to leave? You will be removed from the lobby." func={this.back} />
+                                            text="Are you sure you want to leave? You will be removed from the lobby." func={this.back} buttonText={"Quit"} />
                         <SimpleModalComponent modalVisible={this.state.modalVisible} setModalVisible={this.closeModal} 
-                                              text={"The host has ended the game. Returning to lobby."} buttonText={"OK"} />
+                                              text={this.state.modalText} buttonText={"OK"} />
                         <HostMenuModalComponent modalVisible={this.state.modalMenuVisible} setModalVisible={this.setModalMenuVisible} 
                                                 editGame={this.editGame} newGame={this.newGame} quit={this.setModalExitVisible} />
                     </SafeAreaView>

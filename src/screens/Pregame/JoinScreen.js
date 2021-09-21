@@ -9,6 +9,7 @@ import * as Global from '../../../global/Global'
 import { Ionicons } from '@expo/vector-icons'; 
 import SimpleModalComponent from '../../components/Modal/SimpleModalComponent'
 import uuid from 'react-native-uuid'
+import HideKeyboard from '../../components/General/HideKeyboard'
 
 class JoinScreen extends React.Component {
 
@@ -123,23 +124,29 @@ class JoinScreen extends React.Component {
             case 0:
                 return <CodeComponent checkRoomName={this.checkRoomName} />
             case 1:
-                return <ConfirmationComponent gameFunction={this.joinGame} currentPlayerName={this.state.currentPlayerName} updateCurrentPlayerName={this.updateCurrentPlayerName} />
+                return <ConfirmationComponent text={"You have successfully joined " + this.state.codeToJoin + ". Enter your name to go to the lobby!"} 
+                                              gameFunction={this.joinGame} currentPlayerName={this.state.currentPlayerName} updateCurrentPlayerName={this.updateCurrentPlayerName} />
         }
     }
 
     render() {
         return (
+            <>
+            <BackgroundImage />
             <View style={styles.container}>
-                <BackgroundImage />
                 <LoadingIndicator loading={this.state.loading} />
-                <SafeAreaView style={styles.safeView}>
-                    <TouchableOpacity onPress={this.backButton} >
-                        <Ionicons name="arrow-back-sharp" style={styles.back} />
-                    </TouchableOpacity>
-                    {this.renderScreens()}
-                    <SimpleModalComponent modalVisible={this.state.modalVisible} setModalVisible={this.setModalVisible} text={this.state.text} buttonText={"OK"} />
-                </SafeAreaView>
+                <HideKeyboard>
+                    <SafeAreaView style={styles.safeView}>
+                        <TouchableOpacity onPress={this.backButton} >
+                            <Ionicons name="arrow-back-sharp" style={styles.back} />
+                        </TouchableOpacity>
+                        {this.renderScreens()}
+                        <SimpleModalComponent modalVisible={this.state.modalVisible} setModalVisible={this.setModalVisible} text={this.state.text} buttonText={"OK"} />
+                    </SafeAreaView>
+                </HideKeyboard>
+                
             </View>
+            </>
         )
     }
     

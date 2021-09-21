@@ -84,13 +84,13 @@ const styles = StyleSheet.create({
     },
     paste: {
         width: Dimensions.get('window').width * .8,
-        marginTop: Dimensions.get('window').height * .02,
+        marginTop: Dimensions.get('window').height * .04,
         marginLeft: Dimensions.get('window').width * .1,
         marginRight: Dimensions.get('window').width * .1,
         textAlign: 'center',
         color: Color.TEXT,
         letterSpacing: Dimensions.get('window').height * .003,
-        fontSize: Dimensions.get('window').width * .05,
+        fontSize: Dimensions.get('window').height * .027,
         lineHeight: Dimensions.get('window').height * .04,
         fontFamily: 'PatrickHand'
     }

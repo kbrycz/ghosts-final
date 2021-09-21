@@ -3,18 +3,18 @@ import {View, StyleSheet, Text, Dimensions, TouchableOpacity, TextInput, Alert} 
 import SimpleModalComponent from '../Modal/SimpleModalComponent'
 import * as Color from '../../../global/Color'
 
-const ConfirmationComponent = ({gameFunction, currentPlayerName, updateCurrentPlayerName,}) => {
+const ConfirmationComponent = ({gameFunction, currentPlayerName, updateCurrentPlayerName, text}) => {
     
     const key = Platform.OS === 'ios' ? 'done' : 'next' 
 
     const [modalVisible, setModalVisible] = useState(false);
-    const [text, setText] = useState('');
+    const [modalText, setModalText] = useState('');
 
     const goToLobby = () => {
         if (currentPlayerName.length > 1) {
             gameFunction()
         } else {
-            setText('Player name is too short. Make sure it is at least 2 characters.')
+            setModalText('Player name is too short. Make sure it is at least 2 characters.')
             setModalVisible(true)
         }
     }
@@ -32,9 +32,9 @@ const ConfirmationComponent = ({gameFunction, currentPlayerName, updateCurrentPl
                 value={currentPlayerName}
                 placeholder="name..."
                 onChangeText={updateCurrentPlayerName} />
-            <Text style={styles.paragraph}>You sucessfully created a game! Enter your name to continue to the game lobby!</Text>
+            <Text style={styles.paragraph}>{text}</Text>
 
-            <SimpleModalComponent modalVisible={modalVisible} setModalVisible={setModalVisible} text={text} buttonText={"OK"} />
+            <SimpleModalComponent modalVisible={modalVisible} setModalVisible={setModalVisible} text={modalText} buttonText={"OK"} />
             <TouchableOpacity onPress={goToLobby}>
                 <Text style={styles.playButton}>continue</Text>
             </TouchableOpacity>

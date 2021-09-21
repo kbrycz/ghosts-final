@@ -25,12 +25,12 @@ const styles = StyleSheet.create({
     word: {
         textAlign: 'center',
         textTransform: 'uppercase',
-        fontSize: Dimensions.get('window').width * .06,
+        fontSize: Dimensions.get('window').height * .03,
         fontFamily: 'PatrickHand',
         color: Color.TEXT
     },
     deleteButton: {
-        fontSize: Dimensions.get('window').width * .06,
+        fontSize: Dimensions.get('window').height * .03,
         marginTop:  Dimensions.get('window').height * .008,
         marginRight: Dimensions.get('window').height * .006,
         color: Color.TEXT

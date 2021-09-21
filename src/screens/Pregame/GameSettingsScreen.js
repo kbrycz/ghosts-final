@@ -74,7 +74,7 @@ class GameSettingsScreen extends React.Component {
     // Fetches temp sets
     fetchSets = () =>  {
         let temp = []
-        for (let i = 0; i < 15; ++i) {
+        for (let i = 0; i < 8; ++i) {
             temp.push(
                 {
                     id: i,
@@ -271,6 +271,11 @@ class GameSettingsScreen extends React.Component {
         }
     }
 
+    // Transfers user to the store
+    goToStore = () => {
+        this.props.navigation.navigate('StoreLobby')
+    }
+
 
 
     // Figures out which order of screens to show
@@ -305,7 +310,7 @@ class GameSettingsScreen extends React.Component {
     renderEditPremade = () => {
         switch (this.state.status) {
             case 0:
-                return <PremadeSetsComponent premadeSets={this.state.premadeSets} selectSet={this.selectSet} />
+                return <PremadeSetsComponent premadeSets={this.state.premadeSets} selectSet={this.selectSet} goToStore={this.goToStore} />
             case 1:
                 return <SaveSettingsComponent saveGame={this.saveGame} />
         }
@@ -328,7 +333,7 @@ class GameSettingsScreen extends React.Component {
             case 12:
                 return <SaveSettingsComponent saveGame={this.saveGame} />
             case 11:
-                return <PremadeSetsComponent premadeSets={this.state.premadeSets} selectSet={this.selectSet} />
+                return <PremadeSetsComponent premadeSets={this.state.premadeSets} selectSet={this.selectSet} goToStore={this.goToStore}/>
         }
     }
 
@@ -337,8 +342,9 @@ class GameSettingsScreen extends React.Component {
             return <LoadingIndicator loading={!this.state.hasLoaded} />
         }
         return (
+            <>
+            <BackgroundImage />
             <View style={styles.container}>
-                <BackgroundImage />
                 <LoadingIndicator loading={this.state.loading} />
                 {
                     this.state.status !== 0
@@ -352,6 +358,7 @@ class GameSettingsScreen extends React.Component {
                     {this.organizeScreens()}
                 </SafeAreaView>
             </View>
+            </>
         )
     }
     

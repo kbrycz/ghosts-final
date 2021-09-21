@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     container: {
         padding:  Dimensions.get('window').height * .02,
         borderBottomWidth: 1,
-        borderColor: 'rgba(144, 156, 216, .3)',
+        borderColor: 'rgba(144, 156, 216, .1)',
         flexDirection: 'row'
     }, 
     wordContainer: {
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         textShadowRadius: 10,
         textTransform: 'uppercase',
         fontSize: Dimensions.get('window').height * .03,
-        fontFamily: 'NewTegomin',
+        fontFamily: 'PatrickHand',
     },
     icon: {
         flex: 1,

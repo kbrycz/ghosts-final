@@ -1,16 +1,13 @@
 ************TODO NEXT TIME*********** 
-- Work through the bugs in the lobby edit/new game screens
-    - problems with code showing up after doing that
-    - not updating when you click save and then go right back, updates only after the second TIME
-
-- The game should tell you that you need at least 5 players to play if it is premade, and the numplayers for isCreated
-    - Remove the playersLeft stuff
-************BACKLOG***********
+- copy over the game UIs into the new game screen
+- Start to add server and game functionality as well
 
 
-- Fix up the store screen
-- Be able to click out text input to close it
-- Make it so the join name screen says "you are about to join Karl's game!" and fix it on createGame
+
+************BACKLOG***********  
+
+- Add a hint screen to every players screen in the game
+
 
 
 

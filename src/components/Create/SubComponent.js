@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     word: {
         textAlign: 'center',
         color: Color.TEXT,
-        fontSize: Dimensions.get('window').width * .06,
+        fontSize: Dimensions.get('window').height * .03,
         fontFamily: 'PatrickHand',
     },
 

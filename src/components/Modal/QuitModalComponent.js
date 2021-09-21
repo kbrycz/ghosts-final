@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Alert, Modal, StyleSheet, Text, Pressable, View, Dimensions } from "react-native";
+import { Alert, Modal, StyleSheet, Text, TouchableOpacity, View, Dimensions } from "react-native";
 import * as Color from '../../../global/Color'
 
-const QuitModalComponent = ({modalExitVisible, setModalExitVisible, text, func}) => {
+const QuitModalComponent = ({modalExitVisible, setModalExitVisible, text, buttonText, func}) => {
 
   // Runs the callback function passed in  
   const runFunc = () => {
@@ -23,18 +23,18 @@ const QuitModalComponent = ({modalExitVisible, setModalExitVisible, text, func})
             <View style={styles.modalView}>
                 <Text style={styles.modalText}>{text}</Text>
                 <View style={{flexDirection: 'row', borderRadius: 5, overflow: 'hidden'}}>
-                  <Pressable
+                <TouchableOpacity
+                  style={[styles.button, styles.buttonClose2]}
+                  onPress={runFunc}
+                  >
+                      <Text style={styles.textStyle2}>{buttonText}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
                   style={[styles.button, styles.buttonClose1]}
                   onPress={() => setModalExitVisible(!modalExitVisible)}
                   >
                       <Text style={styles.textStyle1}>Cancel</Text>
-                  </Pressable>
-                  <Pressable
-                  style={[styles.button, styles.buttonClose2]}
-                  onPress={runFunc}
-                  >
-                      <Text style={styles.textStyle2}>Quit</Text>
-                  </Pressable>
+                  </TouchableOpacity>
                 </View>
                
             </View>
@@ -86,20 +86,20 @@ const styles = StyleSheet.create({
     color: Color.MAIN,
     textAlign: "center",
     fontFamily: 'PatrickHand',
-    fontSize: Dimensions.get('window').height * .03,
+    fontSize: Dimensions.get('window').height * .028,
     padding: Dimensions.get('window').width * .01,
   },
   textStyle2: {
     color: "#fff",
     textAlign: "center",
     fontFamily: 'PatrickHand',
-    fontSize: Dimensions.get('window').height * .03,
+    fontSize: Dimensions.get('window').height * .028,
     padding: Dimensions.get('window').width * .01,
   },
   modalText: {
     textAlign: 'center',
     color: Color.MAIN,
-    fontSize: Dimensions.get('window').height * .03,
+    fontSize: Dimensions.get('window').height * .028,
     lineHeight: Dimensions.get('window').height * .045,
     fontFamily: 'PatrickHand',
     marginBottom: Dimensions.get('window').height * .03,

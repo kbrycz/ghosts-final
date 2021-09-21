@@ -13,6 +13,7 @@ import ConfirmationComponent from '../../components/Create/ConfirmationComponent
 import * as Global from '../../../global/Global'
 import SimpleModalComponent from '../../components/Modal/SimpleModalComponent'
 import PremadeSetsComponent from '../../components/Create/PremadeSetsComponent'
+import HideKeyboard from '../../components/General/HideKeyboard'
 
 class CreateScreen extends React.Component {
 
@@ -40,7 +41,7 @@ class CreateScreen extends React.Component {
     // Fetches temp sets
     fetchSets = () =>  {
         let temp = []
-        for (let i = 0; i < 15; ++i) {
+        for (let i = 0; i < 8; ++i) {
             temp.push(
                 {
                     id: i,
@@ -258,6 +259,11 @@ class CreateScreen extends React.Component {
         })
     }
 
+    // Transfers user to the store
+    goToStore = () => {
+        this.props.navigation.navigate('StoreCreate')
+    }
+
     // Renders the screens to show
     renderScreens = () => {
         switch (this.state.status) {
@@ -274,26 +280,31 @@ class CreateScreen extends React.Component {
                               addToSubList={this.addToSubList} subList={this.state.subList} subsLeft={this.state.subsLeft} deleteSub={this.deleteSub} />
             case 5:
             case 12:
-                return <ConfirmationComponent gameFunction={this.createGame} currentPlayerName={this.state.currentPlayerName} updateCurrentPlayerName={this.updateCurrentPlayerName} />
+                return <ConfirmationComponent text={"You have successfully created a game. Enter your name to go to the lobby!"} 
+                                              gameFunction={this.createGame} currentPlayerName={this.state.currentPlayerName} updateCurrentPlayerName={this.updateCurrentPlayerName} />
             case 11:
-                return <PremadeSetsComponent premadeSets={this.state.premadeSets} selectSet={this.selectSet} />
+                return <PremadeSetsComponent premadeSets={this.state.premadeSets} selectSet={this.selectSet} goToStore={this.goToStore}/>
         }
     }
 
     render() {
-        return (
+        return (<>
+            <BackgroundImage />
             <View style={styles.container}>
-                <BackgroundImage />
                 <LoadingIndicator loading={this.state.loading} />
-                <SafeAreaView style={styles.safeView}>
-                    <TouchableOpacity onPress={this.backButton} >
-                        <Ionicons name="arrow-back-sharp" style={styles.back} />
-                    </TouchableOpacity>
-                    {this.renderScreens()}
-                    <SimpleModalComponent modalVisible={this.state.modalVisible} setModalVisible={this.setModalVisible} 
-                                          text="Unable to connect to the server. Please try again!" buttonText={"OK"} />
-                </SafeAreaView>
+                <HideKeyboard>
+                    <SafeAreaView style={styles.safeView}>
+                        <TouchableOpacity onPress={this.backButton} >
+                            <Ionicons name="arrow-back-sharp" style={styles.back} />
+                        </TouchableOpacity>
+                        {this.renderScreens()}
+                        <SimpleModalComponent modalVisible={this.state.modalVisible} setModalVisible={this.setModalVisible} 
+                                                text="Unable to connect to the server. Please try again!" buttonText={"OK"} />
+                    </SafeAreaView>
+                </HideKeyboard>
+                
             </View>
+            </>
         )
     }
     
