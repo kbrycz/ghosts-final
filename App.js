@@ -144,9 +144,8 @@ class App extends React.Component {
                 headerShown: false,
                 animationEnabled: false
               }}>
-                
               <RootStack.Screen name="Game" component={GameStack} />
-              <RootStack.Screen name='Home' component={HomeStack} />
+              <RootStack.Screen name='Home' component={HomeStack} />            
               <RootStack.Screen name='Pregame' component={PregameStack} />
               <RootStack.Screen name="Lobby" component={LobbyStack} />
            </RootStack.Navigator>

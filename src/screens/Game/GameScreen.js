@@ -5,6 +5,9 @@ import * as Color from '../../../global/Color'
 import BackgroundImage from '../../components/General/BackgroundImage'
 import LoadingIndicator from '../../components/General/LoadingIndicator'
 import * as Global from '../../../global/Global'
+import WaitingComponent from '../../components/Game/WaitingComponent'
+import GhostChooseComponent from '../../components/Game/GhostChooseComponent'
+import VotedOutComponent from '../../components/Game/VotedOutComponent'
 
 class GameScreen extends React.Component {
 
@@ -12,10 +15,19 @@ class GameScreen extends React.Component {
         super()
         this.state = {
             loadingContent: true,
-            loading: false
+            loading: false,
+            status: 3,
+            players: [],
+            playersInLobby: [],
+            gameData: {},
+            localPlayer: {},
+            votedId: -1,
+            ghostVotesNeeded: 2,
+            playerVotesNeeded: 2,
+            chosenPlayerId: 0,
         }
     }
-
+    // Temp data in order to create the waiting screens
     getTempData = () => {
         Global.socket = {id: "123"}
         const starterData = {
@@ -92,11 +104,47 @@ class GameScreen extends React.Component {
         players.push(player2)
         players.push(player3)
         players.push(player4)
-        this.setState({players: players, playersInLobby: players, gameData: starterData}, () => this.setState({loadingContent: false}))
+        this.setState({players: players, playersInLobby: players, gameData: starterData, localPlayer: player1}, () => this.setState({loadingContent: false}))
     }
 
     componentDidMount() {
         this.getTempData()
+    }
+
+    // Gets the index of the player based on their id
+    getIndexOfPlayer = (id) => {
+        for (let i = 0; i < this.state.players.length; ++i) {
+            if (id === this.state.players[i].id) {
+                return i
+            }
+        }
+        return 0
+    }
+
+    // Sets the voted id to given amount
+    updateVotedId = (votedIdIn) => {
+        this.setState({votedId: votedIdIn})
+    }
+
+    // Moves player to given screen
+    moveToScreen = (screen) => {
+        this.setState({status: screen})
+    }
+// {titleText, players, votesNeeded, votedId, updateVotedId, isDead, isGhost, word}
+    renderGameScreens = () => {
+        switch(this.state.status) {
+            case 0: 
+                return <WaitingComponent word={this.state.localPlayer.word} isGhost={this.state.localPlayer.isGhost} moveToScreen={this.moveToScreen} />
+            case 1:
+                return (<GhostChooseComponent word={this.state.localPlayer.word} isGhost={this.state.localPlayer.isGhost} titleText={"Who should start this round?"} votedId={this.state.votedId} updateVotedId={this.updateVotedId} 
+                players={this.state.players} votesNeeded={this.state.ghostVotesNeeded} isDead={this.state.localPlayer.isDead} />)
+            case 2:
+                return (<GhostChooseComponent word={this.state.localPlayer.word} isGhost={this.state.localPlayer.isGhost} titleText={`${this.state.players[this.getIndexOfPlayer(this.state.chosenPlayerId)].name} was chosen to start!`} 
+                        votedId={this.state.votedId} updateVotedId={this.updateVotedId} players={this.state.players} votesNeeded={this.state.playerVotesNeeded} 
+                        isDead={this.state.localPlayer.isDead} />)
+            case 3: 
+                return <VotedOutComponent isGhost={this.state.localPlayer.isGhost} moveToScreen={this.moveToScreen} player={this.state.players[this.getIndexOfPlayer(this.state.chosenPlayerId)]}/>
+        }
     }
 
     render() {
@@ -110,7 +158,7 @@ class GameScreen extends React.Component {
                 <View style={styles.container}>
                     <LoadingIndicator loading={this.state.loading} />
                     <SafeAreaView style={styles.safe}>
-                        <Text>Hello</Text>
+                        {this.renderGameScreens()}
                     </SafeAreaView>
                 </View>
             </>

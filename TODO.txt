@@ -1,13 +1,41 @@
 ************TODO NEXT TIME*********** 
-- copy over the game UIs into the new game screen
-- Start to add server and game functionality as well
+- Get the UI screens for the winning game sections all set up
+- Get the start game functionality working where all players get the correct data
+  and sent to the right screen
+
+
 
 
 
 ************BACKLOG***********  
 
-- Add a hint screen to every players screen in the game
+- Get the ghosts voting screen all set up
+    - Make sure that the total votes is set up to the number of ghosts originally
+    - Update server on voting and unvoting
+    - Send all the users to the start screen 
+- Get the player voting screen all set up
+    - Make sure that the total votes is set up to the right number for majority
+    - Update server on voting and unvoting
+    - Send all the users to the kill screen
+- When player is eliminated, update in server and then update all data
+    - numghosts/numplayers left
+    - show player as dead to the other players
 
+
+- Create Guessing component for ghosts
+    - Match guess in text box to the word
+- Normal players have waiting screen 
+    - Can probably take this from the other waiting screen
+- Have a win screen for whoever team
+    - Disconnect all players from socket here besides host
+    - Have a button to leave lobby or return to game
+    - Leaving lobby simply returns to home screen
+    - Return to lobby reconnects the user to the socket and joins the game
+- When host returns, have a pop up tell him to start a new game so 
+  they don't all get the same words
+
+- Add a hint screen to every players screen in the game
+- Create 5 starter packs for the players
 
 
 
@@ -18,13 +46,15 @@
 
 
 
-************STRETCH***********
+************V2 Ideas***********
+- Add ads to the game
+- Add game packs to the store
+- Have delay between voting screen and the next page when vote count happens
 
 
 
 
-
-************V2 IDEAS***********
+************Vinf IDEAS***********
 - Make it so that the game involves writing in your answers instead
     - In this feature, be able to click on a person and see all of their previous answers.
 

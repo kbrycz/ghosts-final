@@ -57,14 +57,18 @@ class AboutScreen extends React.Component {
         return (
             <View>
                 <CircleComponent />
-                <ScrollView style={styles.scroll}>
+                <Text style={styles.headerText}>Sorry!</Text>
+                <Text style={styles.subText}>We currently have no expansion packs available 
+                                             in our store! Come back soon!</Text>
+
+                {/* <ScrollView style={styles.scroll}>
                     <Text style={styles.headerText}>Store</Text>
                     {
                         this.state.gamePacks.map((pack, index) => {
                             return <StoreItemComponent key={index} gamePack={pack} purchaseGamePack={this.purchaseGamePack} /> 
                         })
                     }
-                </ScrollView>
+                </ScrollView> */}
             </View>
         )
     }
@@ -73,13 +77,24 @@ class AboutScreen extends React.Component {
 
 const styles = StyleSheet.create({
     headerText: {
-        marginTop: Dimensions.get('window').height * .05,
+        marginTop: Dimensions.get('window').height * .1,
         marginLeft: Dimensions.get('window').width * .12,
         marginRight: Dimensions.get('window').width * .12,
         marginBottom: Dimensions.get('window').height * .03,
         lineHeight: Dimensions.get('window').height * .08,
         textAlign: 'center',
         fontSize: Dimensions.get('window').height * .05,
+        color: Color.MAIN,
+        fontFamily: 'PatrickHand'
+    },
+    subText: {
+        marginTop: Dimensions.get('window').height * .05,
+        marginLeft: Dimensions.get('window').width * .12,
+        marginRight: Dimensions.get('window').width * .12,
+        marginBottom: Dimensions.get('window').height * .03,
+        lineHeight: Dimensions.get('window').height * .05,
+        textAlign: 'center',
+        fontSize: Dimensions.get('window').height * .03,
         color: Color.MAIN,
         fontFamily: 'PatrickHand'
     },
