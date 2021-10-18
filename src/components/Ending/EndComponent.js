@@ -2,40 +2,46 @@ import React from 'react'
 import {View, StyleSheet, Text, TouchableOpacity, Dimensions, Image, ActivityIndicator} from 'react-native'
 import * as Color from '../../../global/Color'
 
-const WaitingComponent = ({word, isGhost, moveToScreen}) => {
+const EndComponent = ({topic, isCorrect, ghostsWin, returnHome, rejoinLobby}) => {
+
+    const renderParagraph = () => {
+        if (ghostsWin && isCorrect) {
+            return  <Text style={styles.counter}>
+                        The topic was *{topic}*. The ghosts win the game by a landslide! Better luck next time humans.
+                    </Text>
+        }
+        else if (ghostsWin && !isCorrect) {
+            return  <Text style={styles.counter}>
+                        The topic was *{topic}*. The ghosts already won the game anyway. Better luck next time humans.
+                    </Text>
+        }
+        else if (!ghostsWin && isCorrect) {
+            return  <Text style={styles.counter}>
+                        The topic was *{topic}*. The ghosts won the game off their guess! Better luck next time humans.
+                    </Text>
+        }
+        else {
+            return  <Text style={styles.counter}>
+                        The topic was *{topic}*. The Humans win! Great job protecting your topic!
+                    </Text>
+        }
+    }
 
     return (
         <View>
-        {
-            isGhost
-            ? <>
-            <Text style={styles.title}>You are a</Text>
-            <Text style={styles.word}>{word}</Text>
-            <Text style={styles.counter}>
-                You and the other ghosts must now vote for a player to start!
-            </Text>
-            <TouchableOpacity onPress={() => moveToScreen(1)}>
-                <Text style={styles.playButton}>Ready</Text>
+            <Text style={styles.title}>The ghosts guessed...</Text>
+            {
+                isCorrect
+                ? <Text style={styles.word}>Correctly!</Text>
+                : <Text style={styles.word}>Incorrectly!</Text>
+            }
+            {renderParagraph()}
+            <TouchableOpacity onPress={returnHome}>
+                <Text style={styles.playButton}>Leave</Text>
             </TouchableOpacity>
-            </>
-            : <>
-            <Text style={styles.title}>Your Word is:</Text>
-            <Text style={styles.word}>{word}</Text>
-            <ActivityIndicator
-                  style={styles.activityIndicator}
-                  animating={true}
-                  size="large"
-                  color={Color.TEXT}
-              />
-            <Text style={styles.counter}>
-                Waiting for the ghosts to choose who they would like to start the round!
-                Try to think of some clues in the meantime!
-            </Text>
-            </>
-
-        }
-            
-
+            <TouchableOpacity onPress={rejoinLobby}>
+                <Text style={styles.playButton}>Play Again</Text>
+            </TouchableOpacity>
         </View>
         
     )
@@ -46,9 +52,9 @@ const styles = StyleSheet.create({
         marginBottom: Dimensions.get('window').height * .05,
     },
     title: {
-        width: Dimensions.get('window').width * .8,
-        marginLeft: Dimensions.get('window').width * .1,
-        marginRight: Dimensions.get('window').width * .1,
+        width: Dimensions.get('window').width * .9,
+        marginLeft: Dimensions.get('window').width * .05,
+        marginRight: Dimensions.get('window').width * .05,
         marginTop: Dimensions.get('window').height * .1,
         paddingTop: Dimensions.get('window').height * .01,
         textAlign: 'center',
@@ -62,6 +68,7 @@ const styles = StyleSheet.create({
         marginLeft: Dimensions.get('window').width * .1,
         marginRight: Dimensions.get('window').width * .1,
         marginTop: Dimensions.get('window').height * .02,
+        marginBottom: Dimensions.get('window').height * .08,
         textAlign: 'justify',
         color: Color.TEXT,
         fontSize: Dimensions.get('window').height * .025,
@@ -72,16 +79,16 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width * .9,
         marginLeft: Dimensions.get('window').width * .05,
         marginRight: Dimensions.get('window').width * .05,
-        marginTop: Dimensions.get('window').height * .1,
-        marginBottom: Dimensions.get('window').height * .1,
+        marginTop: Dimensions.get('window').height * .05,
+        marginBottom: Dimensions.get('window').height * .05,
         paddingTop: Dimensions.get('window').height * .02,
         textAlign: 'center',
         color: Color.TEXT,
         textShadowColor: 'rgba(0, 0, 0, 0.9)',
         textShadowOffset: {width: -2, height: 2},
-        textShadowRadius: 10,
+        textShadowRadius: 5,
         textTransform: 'uppercase',
-        fontSize: Dimensions.get('window').height * .1,
+        fontSize: Dimensions.get('window').height * .07,
         lineHeight: Dimensions.get('window').height * .1,
         fontFamily: 'PatrickHand'
     },
@@ -89,7 +96,6 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width * .8,
         marginLeft: Dimensions.get('window').width * .1,
         marginRight: Dimensions.get('window').width * .1,
-        marginTop: Dimensions.get('window').height * .07,
         marginBottom: Dimensions.get('window').height * .02,
         color: Color.MAIN,
         fontSize: Dimensions.get('window').height * .03,
@@ -108,4 +114,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default WaitingComponent
+export default EndComponent

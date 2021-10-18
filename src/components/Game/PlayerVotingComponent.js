@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
         textShadowColor: 'rgba(0, 0, 0, 0.9)',
         textShadowOffset: {width: -2, height: 2},
         textShadowRadius: 10,
-        textTransform: 'uppercase',
+        textTransform: 'capitalize',
         fontSize: Dimensions.get('window').width * .06,
         fontFamily: 'PatrickHand',
         flex: 2,

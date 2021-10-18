@@ -2,35 +2,59 @@ import React from 'react'
 import {View, StyleSheet, Text, TouchableOpacity, Dimensions, Image, ActivityIndicator} from 'react-native'
 import * as Color from '../../../global/Color'
 
-const WaitingComponent = ({word, isGhost, moveToScreen}) => {
+const WinnerComponent = ({ghostsWin, isGhost, moveToScreen}) => {
+
+
+    const renderWinStatus = () => {
+        if (ghostsWin) {
+            return (<><Text style={styles.title}>Congratulations to the...</Text>
+                <Text style={styles.word}>Ghosts!</Text></>)
+        }
+        else {
+            return (<><Text style={styles.title}>Congratulations to the...</Text>
+                <Text style={styles.word}>Humans!</Text></>)
+        }
+    }
 
     return (
         <View>
+            {renderWinStatus()}
         {
             isGhost
             ? <>
-            <Text style={styles.title}>You are a</Text>
-            <Text style={styles.word}>{word}</Text>
-            <Text style={styles.counter}>
-                You and the other ghosts must now vote for a player to start!
-            </Text>
-            <TouchableOpacity onPress={() => moveToScreen(1)}>
-                <Text style={styles.playButton}>Ready</Text>
+            {ghostsWin
+            ? <Text style={styles.counter}>
+                    The ghosts have the majority and therefore win the game! Now it is time to really rub it in. 
+                    See if you can guess the topic!
+              </Text>
+            : <Text style={styles.counter}>
+                    All of the ghosts have been eliminated. The game is not over though. 
+                    You and your fellow ghosts get to guess the topic to steal the win!
+              </Text>
+            }
+            
+            <TouchableOpacity onPress={() => moveToScreen(5)}>
+                <Text style={styles.playButton}>Guess</Text>
             </TouchableOpacity>
             </>
             : <>
-            <Text style={styles.title}>Your Word is:</Text>
-            <Text style={styles.word}>{word}</Text>
             <ActivityIndicator
                   style={styles.activityIndicator}
                   animating={true}
                   size="large"
                   color={Color.TEXT}
               />
-            <Text style={styles.counter}>
-                Waiting for the ghosts to choose who they would like to start the round!
-                Try to think of some clues in the meantime!
+            {ghostsWin
+            ? <Text style={styles.counter}>
+                    The ghosts have the majority and therefore win the game! The ghosts are now attempting to guess 
+                    the topic to really rub it in. Better luck next time!
+              </Text>
+            : <Text style={styles.counter}>
+                All the ghosts have been eliminated. The ghosts now get to guess what the topic was. 
+                Let's hope you didn't give it away too easily!
             </Text>
+            }
+
             </>
 
         }
@@ -72,16 +96,16 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width * .9,
         marginLeft: Dimensions.get('window').width * .05,
         marginRight: Dimensions.get('window').width * .05,
-        marginTop: Dimensions.get('window').height * .1,
-        marginBottom: Dimensions.get('window').height * .1,
+        marginTop: Dimensions.get('window').height * .05,
+        marginBottom: Dimensions.get('window').height * .05,
         paddingTop: Dimensions.get('window').height * .02,
         textAlign: 'center',
         color: Color.TEXT,
         textShadowColor: 'rgba(0, 0, 0, 0.9)',
         textShadowOffset: {width: -2, height: 2},
-        textShadowRadius: 10,
+        textShadowRadius: 5,
         textTransform: 'uppercase',
-        fontSize: Dimensions.get('window').height * .1,
+        fontSize: Dimensions.get('window').height * .07,
         lineHeight: Dimensions.get('window').height * .1,
         fontFamily: 'PatrickHand'
     },
@@ -108,4 +132,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default WaitingComponent
+export default WinnerComponent

@@ -19,8 +19,8 @@ const GhostChooseComponent = ({titleText, players, votesNeeded, votedId, updateV
                 keyExtractor={item => item.id.toString()}
                 style={styles.list} />
             {isGhost
-            ? <Text style={styles.word}>You are a {word}</Text>
-            : <Text style={styles.word}>Your word is {word}</Text>
+            ? <Text style={styles.word}>You are a *{word}*</Text>
+            : <Text style={styles.word}>Your word is *{word}*</Text>
             }
             
         </View>
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
         textShadowColor: 'rgba(0, 0, 0, 0.9)',
         textShadowOffset: {width: -2, height: 2},
         textShadowRadius: 10,
-        textTransform: 'uppercase',
         fontSize: Dimensions.get('window').height * .04,
         lineHeight: Dimensions.get('window').height * .06,
         fontFamily: 'PatrickHand',
@@ -57,7 +56,6 @@ const styles = StyleSheet.create({
         textShadowColor: 'rgba(0, 0, 0, 0.9)',
         textShadowOffset: {width: -2, height: 2},
         textShadowRadius: 10,
-        textTransform: 'uppercase',
         fontSize: Dimensions.get('window').height * .03,
         fontFamily: 'PatrickHand',
         textAlign: 'center',

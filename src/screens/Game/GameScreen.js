@@ -8,6 +8,10 @@ import * as Global from '../../../global/Global'
 import WaitingComponent from '../../components/Game/WaitingComponent'
 import GhostChooseComponent from '../../components/Game/GhostChooseComponent'
 import VotedOutComponent from '../../components/Game/VotedOutComponent'
+import GhostGuessComponent from '../../components/Ending/GhostGuessComponent'
+import WinnerComponent from '../../components/Ending/WinnerComponent'
+import WaitingForOtherGhostsComponent from '../../components/Ending/WaitingForOtherGhostsComponent'
+import EndComponent from '../../components/Ending/EndComponent'
 
 class GameScreen extends React.Component {
 
@@ -16,7 +20,7 @@ class GameScreen extends React.Component {
         this.state = {
             loadingContent: true,
             loading: false,
-            status: 3,
+            status: 7,
             players: [],
             playersInLobby: [],
             gameData: {},
@@ -25,8 +29,20 @@ class GameScreen extends React.Component {
             ghostVotesNeeded: 2,
             playerVotesNeeded: 2,
             chosenPlayerId: 0,
+            guess: ''
         }
     }
+
+    // Quit the game and make sure all players know
+    returnHome = () => {
+        console.log("return home")
+    }
+
+    // rejoin the lobby that you are in
+    rejoinLobby = () => {
+        console.log("rejoin the lobby")
+    }
+
     // Temp data in order to create the waiting screens
     getTempData = () => {
         Global.socket = {id: "123"}
@@ -130,7 +146,18 @@ class GameScreen extends React.Component {
     moveToScreen = (screen) => {
         this.setState({status: screen})
     }
-// {titleText, players, votesNeeded, votedId, updateVotedId, isDead, isGhost, word}
+
+    // Sets the ghost's guess
+    setGuess = (g) => {
+        this.setState({guess: g})
+    }
+
+    // ghosts submit their guess here
+    ghostSubmitGuess = () => {
+        console.log("ghost is submitting guess")
+    }
+
+    // Renders all the game screens based on status
     renderGameScreens = () => {
         switch(this.state.status) {
             case 0: 
@@ -139,11 +166,19 @@ class GameScreen extends React.Component {
                 return (<GhostChooseComponent word={this.state.localPlayer.word} isGhost={this.state.localPlayer.isGhost} titleText={"Who should start this round?"} votedId={this.state.votedId} updateVotedId={this.updateVotedId} 
                 players={this.state.players} votesNeeded={this.state.ghostVotesNeeded} isDead={this.state.localPlayer.isDead} />)
             case 2:
-                return (<GhostChooseComponent word={this.state.localPlayer.word} isGhost={this.state.localPlayer.isGhost} titleText={`${this.state.players[this.getIndexOfPlayer(this.state.chosenPlayerId)].name} was chosen to start!`} 
+                return (<GhostChooseComponent word={this.state.localPlayer.word} isGhost={!this.state.localPlayer.isGhost} titleText={`${this.state.players[this.getIndexOfPlayer(this.state.chosenPlayerId)].name} was chosen to start!`} 
                         votedId={this.state.votedId} updateVotedId={this.updateVotedId} players={this.state.players} votesNeeded={this.state.playerVotesNeeded} 
                         isDead={this.state.localPlayer.isDead} />)
             case 3: 
                 return <VotedOutComponent isGhost={this.state.localPlayer.isGhost} moveToScreen={this.moveToScreen} player={this.state.players[this.getIndexOfPlayer(this.state.chosenPlayerId)]}/>
+            case 4:
+                return <WinnerComponent ghostsWin={true} isGhost={this.state.localPlayer.isGhost} moveToScreen={this.moveToScreen} />
+            case 5:
+                return <GhostGuessComponent guess={this.state.guess} setGuess={this.setGuess} topic={this.state.gameData.topic} ghostSubmitGuess={this.ghostSubmitGuess} />
+            case 6:
+                return <WaitingForOtherGhostsComponent isCorrect={true} />
+            case 7:
+                return <EndComponent topic={this.state.gameData.topic} isCorrect={false} ghostsWin={true} returnHome={this.returnHome} rejoinLobby={this.rejoinLobby} />
         }
     }
 

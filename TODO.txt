@@ -1,5 +1,4 @@
 ************TODO NEXT TIME*********** 
-- Get the UI screens for the winning game sections all set up
 - Get the start game functionality working where all players get the correct data
   and sent to the right screen
 
@@ -36,8 +35,7 @@
 
 - Add a hint screen to every players screen in the game
 - Create 5 starter packs for the players
-
-
+- Fix lingo in game to be ghosts vs humans
 
 
 ************GENERAL IDEAS***********
@@ -50,7 +48,7 @@
 - Add ads to the game
 - Add game packs to the store
 - Have delay between voting screen and the next page when vote count happens
-
+- Have the game show the names of the ghosts who guessed correctly
 
 
 
