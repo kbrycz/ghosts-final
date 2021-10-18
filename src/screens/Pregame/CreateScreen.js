@@ -38,19 +38,52 @@ class CreateScreen extends React.Component {
         }
     }
 
+    // {
+    //     id: i,
+    //     subs: ['Lions', 'Bears', 'Packers', 'Chiefs', 'Patriots', 'Rams', 'Chargers', 'Giants'],
+    //     topic: 'NFL Teams',
+    //     userCompleted: false
+    // }
+
     // Fetches temp sets
     fetchSets = () =>  {
         let temp = []
-        for (let i = 0; i < 8; ++i) {
-            temp.push(
-                {
-                    id: i,
-                    subs: ['Lions', 'Bears', 'Packers', 'Chiefs', 'Patriots', 'Rams', 'Chargers', 'Giants'],
-                    topic: 'NFL Teams',
-                    userCompleted: false
-                }
-            )
+        let set1 = {
+            id: 0,
+            topic: 'Disney movies',
+            subs: ['Lion king', 'Aladdin', 'Frozen', 'Moana', 'Hercules', 'Mulan', 'Tarzan', 'Tangled', 'Bambi', 'Dumbo', 'Zootopia', 'Pinocchio'],
+            userCompleted: false
         }
+        let set2 = {
+            id: 1,
+            topic: 'Books',
+            subs: ['To Kill a Mockingbird', 'Lord of the Flies', 'Animal Farm', 'Catcher in the Rye', 'The Great Gatsby', 
+            'Of Mice and Men', 'The Adventures of Tom Sawyer', 'The Hobbit', 'Harry Potter', 'Romeo and Juliet', 'The Giver', 'Jane Eyre'],
+            userCompleted: false
+        }
+        let set3 = {
+            id: 2,
+            topic: 'Candy',
+            subs: ['Air Heads', 'Jolly Rancher', 'Life Savers', 'Pop Rocks', 'Skittles', 'Kit Kat', 'Sour Patch Kids', 'Laffy Taffy', 'Pez', 'Tootsie Roll', 'Ring Pops', 'Twizzlers'],
+            userCompleted: false
+        }
+        let set4 = {
+            id: 3,
+            topic: 'Pizza Toppings',
+            subs: ['Pepperoni', 'Mushroom', 'Sausage', 'Black olives', 'Green pepper', 'Pineapple', 'Ham', 'Kale', 'Jalapenos', 'Bacon', 'Chicken', 'Spinach'],
+            userCompleted: false
+        }
+        let set5 = {
+            id: 4,
+            topic: 'Video Game Characters',
+            subs: ['Mario', 'Luigi', 'Master Chief', 'Zelda', 'Bowser', 'Sonic', 'Ash Ketchum', 'Tom Nook', 'Pac-Man', 'Lara Croft', 'Mega Man', 'Pikachu'],
+            userCompleted: false
+        }
+        temp.push(set1)
+        temp.push(set2)
+        temp.push(set3)
+        temp.push(set4)
+        temp.push(set5)
         this.setState({
             premadeSets: temp
         })

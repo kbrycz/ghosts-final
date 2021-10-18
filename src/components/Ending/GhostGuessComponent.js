@@ -42,8 +42,10 @@ const GhostGuessComponent = ({guess, setGuess, ghostSubmitGuess, topic}) => {
             />
 
             {countWords(topic) === 1
-            ? <Text style={styles.question}>Hint: The topic is 1 word. Spelling counts! Don't worry about capitalization.</Text>
-            : <Text style={styles.question}>Hint: The topic is {countWords(topic)} words. Spelling counts! Don't worry about capitalization.</Text>
+            ? <Text style={styles.question}>Hint: The topic is 1 word. Spelling counts! Don't worry about capitalization. 
+                                            Say your guess out loud in case it is close enough!</Text>
+            : <Text style={styles.question}>Hint: The topic is {countWords(topic)} words. Spelling counts! Don't worry about capitalization. 
+                                            Say your guess out loud in case it is close enough!</Text>
             }
             <SimpleModalComponent modalVisible={modalVisible} setModalVisible={setModalVisible} text={text} buttonText={"OK"} />
             <TouchableOpacity onPress={continueButton}>

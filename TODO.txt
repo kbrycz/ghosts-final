@@ -1,25 +1,23 @@
-************TODO NEXT TIME*********** 
+************TODO NEXT TIME***********
+- Get the ready up buttons all set up
 - Get the start game functionality working where all players get the correct data
   and sent to the right screen
-
-
-
+- Make sure that the total votes is set up to the number of ghosts originally
+    - Update server on voting and unvoting
+    - Send all the users to the start screen 
 
 
 ************BACKLOG***********  
 
+- When player is eliminated, update in server and then update all data
+    - numghosts/numplayers left
+    - show player as dead to the other players
 - Get the ghosts voting screen all set up
-    - Make sure that the total votes is set up to the number of ghosts originally
-    - Update server on voting and unvoting
-    - Send all the users to the start screen 
+
 - Get the player voting screen all set up
     - Make sure that the total votes is set up to the right number for majority
     - Update server on voting and unvoting
     - Send all the users to the kill screen
-- When player is eliminated, update in server and then update all data
-    - numghosts/numplayers left
-    - show player as dead to the other players
-
 
 - Create Guessing component for ghosts
     - Match guess in text box to the word
@@ -32,10 +30,12 @@
     - Return to lobby reconnects the user to the socket and joins the game
 - When host returns, have a pop up tell him to start a new game so 
   they don't all get the same words
+- Handle when player leaves the game
+    - Must notify all players and handle all the numplayers/numghosts variables
+
 
 - Add a hint screen to every players screen in the game
-- Create 5 starter packs for the players
-- Fix lingo in game to be ghosts vs humans
+
 
 
 ************GENERAL IDEAS***********
@@ -49,6 +49,7 @@
 - Add game packs to the store
 - Have delay between voting screen and the next page when vote count happens
 - Have the game show the names of the ghosts who guessed correctly
+- Add a user completed feature
 
 
 
