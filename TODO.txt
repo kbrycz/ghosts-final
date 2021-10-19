@@ -1,19 +1,9 @@
 ************TODO NEXT TIME***********
-- Get the ghosts voting screen all set up
-
-- Get the player voting screen all set up
-    - Make sure that the total votes is set up to the right number for majority
-    - Update server on voting and unvoting
-    - Send all the users to the kill screen
-
-************BACKLOG***********  
-
-- When player is eliminated, update in server and then update all data
-    - numghosts/numplayers left
-    - show player as dead to the other players
-
 - Create Guessing component for ghosts
     - Match guess in text box to the word
+- Change up waiting screen for dead players
+************BACKLOG***********  
+
 - Normal players have waiting screen 
     - Can probably take this from the other waiting screen
 - Have a win screen for whoever team
@@ -28,8 +18,9 @@
 
 
 - Add a hint screen to every players screen in the game
-
-
+- Make sure that the premade list has max number of players at 12
+- Double click to join problem
+    - If click join lobby really fast, then two of the same user show up
 
 ************GENERAL IDEAS***********
 

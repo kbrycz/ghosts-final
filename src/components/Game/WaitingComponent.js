@@ -72,8 +72,8 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width * .9,
         marginLeft: Dimensions.get('window').width * .05,
         marginRight: Dimensions.get('window').width * .05,
-        marginTop: Dimensions.get('window').height * .1,
-        marginBottom: Dimensions.get('window').height * .1,
+        marginTop: Dimensions.get('window').height * .06,
+        marginBottom: Dimensions.get('window').height * .06,
         paddingTop: Dimensions.get('window').height * .02,
         textAlign: 'center',
         color: Color.TEXT,
@@ -81,8 +81,8 @@ const styles = StyleSheet.create({
         textShadowOffset: {width: -2, height: 2},
         textShadowRadius: 10,
         textTransform: 'uppercase',
-        fontSize: Dimensions.get('window').height * .1,
-        lineHeight: Dimensions.get('window').height * .13,
+        fontSize: Dimensions.get('window').height * .07,
+        lineHeight: Dimensions.get('window').height * .1,
         fontFamily: 'PatrickHand'
     },
     playButton: {

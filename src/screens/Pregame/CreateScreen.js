@@ -57,8 +57,7 @@ class CreateScreen extends React.Component {
         let set2 = {
             id: 1,
             topic: 'Books',
-            subs: ['To Kill a Mockingbird', 'Lord of the Flies', 'Animal Farm', 'Catcher in the Rye', 'The Great Gatsby', 
-            'Of Mice and Men', 'The Adventures of Tom Sawyer', 'The Hobbit', 'Harry Potter', 'Romeo and Juliet', 'The Giver', 'Jane Eyre'],
+            subs: ['The Great Gatsby', 'Tom Sawyer', 'The Hobbit', 'Harry Potter', 'Romeo and Juliet', 'The Giver', 'Jane Eyre'],
             userCompleted: false
         }
         let set3 = {

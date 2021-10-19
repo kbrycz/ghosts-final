@@ -126,8 +126,6 @@ class LobbyScreen extends React.Component {
         Global.socket.on('startGame', (obj) => {
             console.log("Game has been created. Updating player arrays and then starting...")
             this.setState({loading: false})
-            console.log(this.state.localPlayer)
-            console.log(obj)
             for (let i = 0; i < obj.players.length; ++i) {
                 if (obj.players[i].id === this.state.localPlayer.id) {
                     this.props.navigation.navigate("Game", {screen: 'Gameplay', params: {gameData: obj.gameData, players: obj.players, 
@@ -323,7 +321,7 @@ class LobbyScreen extends React.Component {
         tempData.numPlayers = numPlayers
         tempData.numSubs = numSubs
         tempData.numTops = numTops
-        this.setState({gameData: tempData}, () => console.log(this.state.gameData))
+        this.setState({gameData: tempData})
     }
 
     // Start the game and notifiy the server

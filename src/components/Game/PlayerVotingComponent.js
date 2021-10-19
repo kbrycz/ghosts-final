@@ -16,7 +16,9 @@ const PlayerVotingComponent = ({player, votesNeeded, votedId, updateVotedId, isD
 
     const deadStyle = (d) => {
         if (d) {
-            return {borderColor: '#060a14'}
+            return {
+                opacity: .3
+            }
         }
     }
 
@@ -48,23 +50,23 @@ const PlayerVotingComponent = ({player, votesNeeded, votedId, updateVotedId, isD
     }
 
     return (
-        <View style={[styles.container, hostStyle1(player.id), deadStyle(player.isDead)]}>
+        <View style={[styles.container, hostStyle1(player.id)]}>
             <View
             style={styles.wordContainer}>
                 {
                     player.isGhost && isGhost
-                    ? (<View style={styles.ghostView}>
+                    ? (<View style={[styles.ghostView, deadStyle(player.isDead)]}>
                          <SimpleLineIcons name="ghost" style={styles.ghost} />
                          <Text style={styles.word}>{player.name}</Text>
                        </View>)
-                    : (<View style={styles.ghostView}>
+                    : (<View style={[styles.ghostView, deadStyle(player.isDead)]}>
                         <SimpleLineIcons name="user" style={styles.ghost} />
                         <Text style={styles.word}>{player.name}</Text>
                       </View>)
                 }
                 {renderElement()}
                 {player.isDead
-                ? <Text style={styles.waiting}>Dead</Text>
+                ? <Text style={[styles.waiting, deadStyle(player.isDead)]}>Dead</Text>
                 : <Text style={styles.waiting}>{player.votes}/{votesNeeded}</Text>
                 }
             </View>
