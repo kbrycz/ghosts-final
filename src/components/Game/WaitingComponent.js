@@ -19,7 +19,7 @@ const WaitingComponent = ({word, isGhost, moveToScreen}) => {
             </TouchableOpacity>
             </>
             : <>
-            <Text style={styles.title}>Your Word is:</Text>
+            <Text style={styles.title}>Your word is:</Text>
             <Text style={styles.word}>{word}</Text>
             <ActivityIndicator
                   style={styles.activityIndicator}
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
         textShadowRadius: 10,
         textTransform: 'uppercase',
         fontSize: Dimensions.get('window').height * .1,
-        lineHeight: Dimensions.get('window').height * .1,
+        lineHeight: Dimensions.get('window').height * .13,
         fontFamily: 'PatrickHand'
     },
     playButton: {

@@ -1,23 +1,16 @@
 ************TODO NEXT TIME***********
-- Get the ready up buttons all set up
-- Get the start game functionality working where all players get the correct data
-  and sent to the right screen
-- Make sure that the total votes is set up to the number of ghosts originally
-    - Update server on voting and unvoting
-    - Send all the users to the start screen 
-
-
-************BACKLOG***********  
-
-- When player is eliminated, update in server and then update all data
-    - numghosts/numplayers left
-    - show player as dead to the other players
 - Get the ghosts voting screen all set up
 
 - Get the player voting screen all set up
     - Make sure that the total votes is set up to the right number for majority
     - Update server on voting and unvoting
     - Send all the users to the kill screen
+
+************BACKLOG***********  
+
+- When player is eliminated, update in server and then update all data
+    - numghosts/numplayers left
+    - show player as dead to the other players
 
 - Create Guessing component for ghosts
     - Match guess in text box to the word

@@ -20,14 +20,14 @@ class GameScreen extends React.Component {
         this.state = {
             loadingContent: true,
             loading: false,
-            status: 7,
+            status: 0,
             players: [],
             playersInLobby: [],
             gameData: {},
             localPlayer: {},
             votedId: -1,
-            ghostVotesNeeded: 2,
-            playerVotesNeeded: 2,
+            ghostVotesNeeded: 0,
+            playerVotesNeeded: 0,
             chosenPlayerId: 0,
             guess: ''
         }
@@ -123,8 +123,45 @@ class GameScreen extends React.Component {
         this.setState({players: players, playersInLobby: players, gameData: starterData, localPlayer: player1}, () => this.setState({loadingContent: false}))
     }
 
+    // Set the current playerVotesNeeded variable
+    setPlayerVotesNeeded = (playersLength) => {
+
+        // Makes sure the majority is correct
+        let playerVotesNeededTemp = playersLength
+        if (playerVotesNeededTemp % 2 === 0) {
+            playerVotesNeededTemp = playerVotesNeededTemp / 2
+        }
+        else {
+            playerVotesNeededTemp = (playerVotesNeededTemp / 2) + 1
+        }
+
+        this.setState({
+            playerVotesNeeded: playerVotesNeededTemp
+        })
+    }
+
+    // Gets all of the real data from lobby screen
+    getLobbyData = () => {
+
+        this.setPlayerVotesNeeded(this.props.route.params.gameData.numPlayers)
+
+        this.setState({
+            gameData: this.props.route.params.gameData,
+            players: this.props.route.params.players,
+            playersInLobby: this.props.route.params.playersInLobby,
+            localPlayer: this.props.route.params.localPlayer,
+            ghostVotesNeeded: this.props.route.params.gameData.numGhosts,
+        }, () => {
+            this.setState({
+                loadingContent: false
+            })
+            console.log(this.state.gameData)
+        })
+    }
+
     componentDidMount() {
-        this.getTempData()
+        // this.getTempData()
+        this.getLobbyData()
     }
 
     // Gets the index of the player based on their id

@@ -22,9 +22,9 @@ class LobbyScreen extends React.Component {
             playersLeft: 0,
             localPlayer: {},
             modalExitVisible: false,
+            modalMenuVisible: false,
             modalVisible: false,
             isGoingHome: false,
-            modalMenuVisible: false,
             hasBeenEdited: false,
             code: '',
             modalText: ''
@@ -126,8 +126,24 @@ class LobbyScreen extends React.Component {
         Global.socket.on('startGame', (obj) => {
             console.log("Game has been created. Updating player arrays and then starting...")
             this.setState({loading: false})
-            this.props.navigation.navigate("Game", {screen: 'Gameplay', params: {gameData: obj.gameData, players: obj.players, 
-                                                    playersInLobby: this.state.playersInLobby, localPlayer: this.state.localPlayer}})
+            console.log(this.state.localPlayer)
+            console.log(obj)
+            for (let i = 0; i < obj.players.length; ++i) {
+                if (obj.players[i].id === this.state.localPlayer.id) {
+                    this.props.navigation.navigate("Game", {screen: 'Gameplay', params: {gameData: obj.gameData, players: obj.players, 
+                        playersInLobby: this.state.playersInLobby, localPlayer: obj.players[i]}})
+                    return
+                }
+            }
+
+            // return user to main screen and show them a modal
+            console.log("Unable to play game because id couldnt be found")
+            this.setState({
+                isGoingHome: true
+            }, () => this.setModalVisible(true))
+        
+
+            
         })   
 
         // Initializes all of the game data
@@ -173,6 +189,11 @@ class LobbyScreen extends React.Component {
     // Sets the host menu variable
     setModalMenuVisible = (isVis) => {
         this.setState({modalMenuVisible: isVis, modalExitVisible: false})
+    }
+
+    // Sets the simple modal variable
+    setModalVisible = (isVis) => {
+        this.setState({modalVisible: isVis, modalExitVisible: false})
     }
 
     // Returns the user to the home screen when the host quits
@@ -244,6 +265,67 @@ class LobbyScreen extends React.Component {
         }
     }
 
+    // Get all of the game data numbers added to gamedata obj if game is not created
+    getGameData = () => {
+        let tempData = this.state.gameData
+        let numPlayers = this.state.playersInLobby.length
+        let numSubs = 0
+        let numTops = 0
+        let numGhosts = 0
+        switch (numPlayers) {
+            case 4:
+                numSubs = 2
+                numTops = 1
+                numGhosts = 1
+                break
+            case 5:
+                numSubs = 3
+                numTops = 1
+                numGhosts = 1
+                break
+            case 6:
+                numSubs = 3
+                numTops = 1
+                numGhosts = 2
+                break
+            case 7:
+                numSubs = 3
+                numTops = 2
+                numGhosts = 2
+                break
+            case 8:
+                numSubs = 4
+                numTops = 2
+                numGhosts = 2
+                break
+            case 9:
+                numSubs = 4
+                numTops = 2
+                numGhosts = 3
+                break
+            case 10:
+                numSubs = 5
+                numTops = 2
+                numGhosts = 3
+                break
+            case 11:
+                numSubs = 6
+                numTops = 2
+                numGhosts = 3
+                break
+            case 12:
+                numSubs = 6
+                numTops = 3
+                numGhosts = 3
+                break
+        }
+        tempData.numGhosts = numGhosts
+        tempData.numPlayers = numPlayers
+        tempData.numSubs = numSubs
+        tempData.numTops = numTops
+        this.setState({gameData: tempData}, () => console.log(this.state.gameData))
+    }
+
     // Start the game and notifiy the server
     startGame = () => {
         this.setState({loading: true})
@@ -251,12 +333,17 @@ class LobbyScreen extends React.Component {
         if (this.state.gameData.isCreated) {
             tempPlayers.splice(0, 1)
         }
+
+        if (!this.state.gameData.isCreated) {
+            this.getGameData()
+        } 
         let obj = {
             code: this.state.code,
             gameData: this.state.gameData,
             players: tempPlayers
         }
         Global.socket.emit('startGame', obj)
+
     }
 
     render() {
