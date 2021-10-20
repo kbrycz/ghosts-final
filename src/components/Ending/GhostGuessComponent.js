@@ -33,7 +33,7 @@ const GhostGuessComponent = ({guess, setGuess, ghostSubmitGuess, topic}) => {
             <Text style={styles.title}>What do you think the topic is?</Text>
             <TextInput
             autoCapitalize="characters"
-            maxLength={16}
+            maxLength={24}
             style={styles.textInput}
             returnKeyType={"done"}
             value={guess.toString()}
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         fontFamily: 'PatrickHand'
     },
     textInput: {
-        marginBottom: Dimensions.get('window').height * .1,
+        marginBottom: Dimensions.get('window').height * .07,
         width: Dimensions.get('window').width * .8,
         marginLeft: Dimensions.get('window').width * .1,
         marginRight: Dimensions.get('window').width * .1,

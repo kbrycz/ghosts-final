@@ -2,7 +2,7 @@ import React from 'react'
 import {View, StyleSheet, Text, TouchableOpacity, Dimensions, Image, ActivityIndicator} from 'react-native'
 import * as Color from '../../../global/Color'
 
-const WaitingComponent = ({word, isGhost, moveToScreen}) => {
+const WaitingComponent = ({word, isGhost, moveToScreen, isDead}) => {
 
     return (
         <View>
@@ -11,26 +11,63 @@ const WaitingComponent = ({word, isGhost, moveToScreen}) => {
             ? <>
             <Text style={styles.title}>You are a</Text>
             <Text style={styles.word}>{word}</Text>
-            <Text style={styles.counter}>
-                You and the other ghosts must now vote for a player to start!
-            </Text>
-            <TouchableOpacity onPress={() => moveToScreen(1)}>
-                <Text style={styles.playButton}>Ready</Text>
-            </TouchableOpacity>
+            {
+                isDead
+                ? <>
+                    <ActivityIndicator
+                    style={styles.activityIndicator}
+                    animating={true}
+                    size="large"
+                    color={Color.TEXT}
+                    />
+                  <Text style={styles.counter}>
+                    You are dead. You are no longer allowed to talk, but you can listen! See if you can try to piece together what the topic might be! 
+                    The ghosts are currently choosing a starting player
+                  </Text>
+
+                </>
+                : <>
+                    <Text style={styles.counter}>
+                        You and the other ghosts must now vote for a player to start!
+                    </Text>
+                    <TouchableOpacity onPress={() => moveToScreen(1)}>
+                        <Text style={styles.playButton}>Ready</Text>
+                    </TouchableOpacity>
+                  </>
+            }
+            
             </>
             : <>
             <Text style={styles.title}>Your word is:</Text>
             <Text style={styles.word}>{word}</Text>
-            <ActivityIndicator
+            {
+                isDead
+                ? <>
+                <ActivityIndicator
                   style={styles.activityIndicator}
                   animating={true}
                   size="large"
                   color={Color.TEXT}
-              />
-            <Text style={styles.counter}>
-                Waiting for the ghosts to choose who they would like to start the round!
-                Try to think of some clues in the meantime!
-            </Text>
+                />
+                <Text style={styles.counter}>
+                    You are dead. You are no longer allowed to speak or contribute to the game!
+                    You are now waiting for the ghosts to choose who they would like to start the round!
+                </Text>
+                </>
+                : <>
+                <ActivityIndicator
+                  style={styles.activityIndicator}
+                  animating={true}
+                  size="large"
+                  color={Color.TEXT}
+                />
+                <Text style={styles.counter}>
+                    Waiting for the ghosts to choose who they would like to start the round!
+                    Try to think of some clues in the meantime! Close your eyes and wait for a sound to wake you up! (Make sure your volume is up!)
+                </Text>
+                </>
+            }
+            
             </>
 
         }

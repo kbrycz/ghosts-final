@@ -195,7 +195,8 @@ class CreateScreen extends React.Component {
     selectSet = (set) => {
         this.setState({
             finalSet: set,
-            status: 12
+            status: 12,
+            topic: set.topic
         })
     }
 

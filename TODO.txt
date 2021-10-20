@@ -1,11 +1,6 @@
 ************TODO NEXT TIME***********
-- Create Guessing component for ghosts
-    - Match guess in text box to the word
-- Change up waiting screen for dead players
+- Add a sound to the waiting screen
 ************BACKLOG***********  
-
-- Normal players have waiting screen 
-    - Can probably take this from the other waiting screen
 - Have a win screen for whoever team
     - Disconnect all players from socket here besides host
     - Have a button to leave lobby or return to game
@@ -15,13 +10,15 @@
   they don't all get the same words
 - Handle when player leaves the game
     - Must notify all players and handle all the numplayers/numghosts variables
+    - Have to make new variables to keep track of players in the game currently outside of gamedata
 
-
+- 
 - Add a hint screen to every players screen in the game
 - Make sure that the premade list has max number of players at 12
 - Double click to join problem
     - If click join lobby really fast, then two of the same user show up
-
+- Make it so you cant vote for yourself
+- Make the premade game sets have an icon based on easy medium hard
 ************GENERAL IDEAS***********
 
 

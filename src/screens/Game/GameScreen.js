@@ -12,6 +12,7 @@ import GhostGuessComponent from '../../components/Ending/GhostGuessComponent'
 import WinnerComponent from '../../components/Ending/WinnerComponent'
 import WaitingForOtherGhostsComponent from '../../components/Ending/WaitingForOtherGhostsComponent'
 import EndComponent from '../../components/Ending/EndComponent'
+import { Audio } from 'expo-av';
 
 class GameScreen extends React.Component {
 
@@ -20,6 +21,7 @@ class GameScreen extends React.Component {
         this.state = {
             loadingContent: true,
             loading: false,
+            sound: null,
             status: 0,
             players: [],
             playersInLobby: [],
@@ -32,6 +34,9 @@ class GameScreen extends React.Component {
             chosenPlayerId: 0,
             guess: '',
             ghostsWin: false,
+            totalGhostsGuessed: 0,
+            ghostsGuessRight: false,
+            isCorrect: false
         }
     }
 
@@ -161,10 +166,19 @@ class GameScreen extends React.Component {
         })
     }
 
+    // Sets up the sound variables
+    setUpSound = async () => {
+        const { sound } = await Audio.Sound.createAsync(
+            require('../../../assets/ghostSound.mp3')
+        );
+        this.setState({sound: sound})
+    }
+
     componentDidMount() {
         // this.getTempData()
         this.getLobbyData()
         this.socketFunctions()
+        this.setUpSound()
     }
 
     // All socket functions
@@ -176,7 +190,7 @@ class GameScreen extends React.Component {
             })
         })
 
-        Global.socket.on('votingFinished', (startingPlayerId) => {
+        Global.socket.on('votingFinished', async (startingPlayerId) => {
             console.log("This player has been picked: " + startingPlayerId)
 
             // Set localplayer to dead if they are dead
@@ -203,6 +217,12 @@ class GameScreen extends React.Component {
                 }
             }
             console.log("Game is continuing on. Sending player to voted off screen")
+            if (this.state.status < 2) {
+                if (this.state.sound !== null) {
+                    console.log("playing sound")
+                    await this.state.sound.playAsync();
+                }
+            }
             this.setState({
                 votedId: -1,
                 players: tempPlayers,
@@ -211,27 +231,24 @@ class GameScreen extends React.Component {
             })
         })
 
-        // this.state.socket.on('ghostsGuessedRight', () => {
-        //     console.log("One of the ghosts Guessed Right, they win!")
-        //     this.setState({
-        //         status: 9,
-        //         ghostsWin: true,
-        //         ghostsGuessedRight: true
-        //     })
-        // })
-        // this.state.socket.on('ghostsGuessedWrong', () => {
-        //     console.log("All of the ghosts Guessed Right, players win!")
-        //     this.setState({
-        //         status: 9,
-        //         ghostsWin: false
-        //     })
-        // })
-        // this.state.socket.on('ghostsGuessed', (obj) => {
-        //     console.log("One of the ghosts Guessed wrong")
-        //     this.setState({
-        //         ghostsGuessed: obj.ghostsGuessed,
-        //     })
-        // })
+        Global.socket.on('ghostGuessed', (obj) => {
+            console.log("One of the ghosts has guessed")
+            if (obj.isRight) {
+                this.setState({
+                    ghostsGuessRight: true
+                })
+            }
+            this.setState({
+                totalGhostsGuessed: this.state.totalGhostsGuessed + 1,
+            }, () => {
+                if (this.state.totalGhostsGuessed >= this.state.gameData.numGhosts) {
+                    console.log("All ghosts have guessed. Moving to winning screen.")
+                    this.setState({
+                        status: 7
+                    })
+                }
+            })
+        })
     }
 
     // Updates necessary variables for when a player is killed. 
@@ -305,7 +322,23 @@ class GameScreen extends React.Component {
 
     // ghosts submit their guess here
     ghostSubmitGuess = () => {
+        let obj = {isRight: false, code: this.state.gameData.code}
+        if (this.state.guess.toUpperCase() === this.state.gameData.topic.toUpperCase()) {
+            // Tell everyone that the ghosts win
+            obj.isRight = true
+            this.setState({
+                isPlayerCorrect: true,
+                status: 6
+            })
+        }
+        else {
+            this.setState({
+                isPlayerCorrect: false,
+                status: 6
+            })
+        }
         console.log("ghost is submitting guess")
+        Global.socket.emit('ghostGuessed', obj)
     }
 
     // Gets the index of the player based on their id
@@ -355,7 +388,7 @@ class GameScreen extends React.Component {
     renderGameScreens = () => {
         switch(this.state.status) {
             case 0: 
-                return <WaitingComponent word={this.state.localPlayer.word} isGhost={this.state.localPlayer.isGhost} moveToScreen={this.moveToScreen} />
+                return <WaitingComponent word={this.state.localPlayer.word} isGhost={this.state.localPlayer.isGhost} moveToScreen={this.moveToScreen} isDead={this.state.localPlayer.isDead} />
             case 1:
                 return (<GhostChooseComponent word={this.state.localPlayer.word} isGhost={this.state.localPlayer.isGhost} titleText={"Who should start this round?"} votedId={this.state.votedId} updateVotedId={this.updateVotedId} 
                 players={this.state.players} votesNeeded={this.state.ghostVotesNeeded} isDead={this.state.localPlayer.isDead} />)
@@ -366,13 +399,13 @@ class GameScreen extends React.Component {
             case 3: 
                 return <VotedOutComponent isGhost={this.state.localPlayer.isGhost} moveToScreen={this.moveToScreen} player={this.state.players[this.getIndexOfPlayer(this.state.chosenPlayerId)]}/>
             case 4:
-                return <WinnerComponent ghostsWin={true} isGhost={this.state.localPlayer.isGhost} moveToScreen={this.moveToScreen} />
+                return <WinnerComponent ghostsWin={this.state.ghostsWin} isGhost={this.state.localPlayer.isGhost} moveToScreen={this.moveToScreen} />
             case 5:
                 return <GhostGuessComponent guess={this.state.guess} setGuess={this.setGuess} topic={this.state.gameData.topic} ghostSubmitGuess={this.ghostSubmitGuess} />
             case 6:
-                return <WaitingForOtherGhostsComponent isCorrect={true} />
+                return <WaitingForOtherGhostsComponent isCorrect={this.state.isPlayerCorrect} />
             case 7:
-                return <EndComponent topic={this.state.gameData.topic} isCorrect={false} ghostsWin={true} returnHome={this.returnHome} rejoinLobby={this.rejoinLobby} />
+                return <EndComponent topic={this.state.gameData.topic} isCorrect={this.state.ghostsGuessRight} ghostsWin={this.state.ghostsWin} returnHome={this.returnHome} rejoinLobby={this.rejoinLobby} />
         }
     }
 
