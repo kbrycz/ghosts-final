@@ -6,6 +6,7 @@ import * as Color from '../../../global/Color'
 
 const GhostChooseComponent = ({isWatching, titleText, players, votesNeeded, votedId, updateVotedId, isDead, isGhost, word, localPlayerId, isPlayerRound}) => {
 
+    // Render what the bottom of the lobby looks like
     const renderBottom = () => {
         if (isWatching) {
             return <Text style={styles.word}>You are the host</Text>

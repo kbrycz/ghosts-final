@@ -13,6 +13,7 @@ import { Entypo } from '@expo/vector-icons';
 
 const PremadeItemComponent = ({set, selectSet}) => {
 
+    // Makes it so the top item has a border
     const containerStyle = (id) => {
         if (id === 0) {
             return {
@@ -21,6 +22,7 @@ const PremadeItemComponent = ({set, selectSet}) => {
         }
     }
 
+    // Gets the difficulty icon for the pack
     const getDifficulty = () => {
         if (set.diff === 0) {
             return <Text style={styles.diff}>(E)</Text>

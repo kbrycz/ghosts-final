@@ -9,6 +9,7 @@ const WordComponent = ({topic, setTopic, nextPage}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [text, setText] = useState('');
 
+    // Continue on to next page if topic is good
     const continueButton = () => {
         if (topic.length < 2) {
             setText('Topic is too short. Make it at least 2 characters.')

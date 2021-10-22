@@ -4,6 +4,7 @@ import * as Color from '../../../global/Color'
 
 const WaitingComponent = ({isWatching, word, isGhost, moveToScreen, isDead}) => {
 
+    // renders host view, player view, and ghost view
     const renderElements = () => {
         if (isWatching) {
             return (

@@ -11,6 +11,7 @@ const SubComponent = ({currentSub, setCurrentSub, addToSubList, subList, subsLef
     const [modalVisible, setModalVisible] = useState(false);
     const [text, setText] = useState('');
 
+    // Continue on to next screen
     const continueButton = () => {
         if (subsLeft > 0) {
             setText('Hold on! You still need ' + subsLeft + ' more!')
@@ -20,6 +21,7 @@ const SubComponent = ({currentSub, setCurrentSub, addToSubList, subList, subsLef
         }
     }
 
+    // Try to add the sub if it is correct length
     const tryAddingToSubList = () => {
         if (subsLeft > 0 && currentSub.length > 1) {
             addToSubList()

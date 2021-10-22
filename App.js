@@ -51,7 +51,7 @@ const GameStack = () => {
   )
 }
 
-// Creates stack for the Game screens
+// Creates stack for the Pregame screens
 const Pregame = createStackNavigator();
 const PregameStack = () => {
   return (
@@ -68,7 +68,7 @@ const PregameStack = () => {
   )
 }
 
-// Creates stack for the Game screens
+// Creates stack for the Lobby screens
 const Lobby = createStackNavigator();
 const LobbyStack = () => {
   return (
@@ -105,6 +105,7 @@ class App extends React.Component {
   async loadEverything() {
     // Keep the splash screen visible while we fetch resources
     await SplashScreen.preventAutoHideAsync();
+
     // Loads all the images
     await Asset.loadAsync([
       require('./assets/background.png'),
@@ -113,7 +114,6 @@ class App extends React.Component {
 
     // Loads all the fonts
     await Font.loadAsync({
-      NewTegomin: require('./assets/fonts/New_Tegomin/NewTegomin-Regular.ttf'),
       PatrickHand: require('./assets/fonts/PatrickHand-Regular.ttf'),
     });
 
@@ -121,10 +121,10 @@ class App extends React.Component {
     this.setState({ 
         loading: false,
     });
-    // TODO CHANGE THIS
+
     setTimeout(async () => {
       await SplashScreen.hideAsync();
-    }, 500);
+    }, 3000);
 }
  
   // Check and see if user already has a token to log user in
@@ -132,6 +132,7 @@ class App extends React.Component {
     this.loadEverything()
   }
 
+  // Allows for fading between screens
   forFade = ({ current }) => ({
     cardStyle: {
       opacity: current.progress,
@@ -142,7 +143,6 @@ class App extends React.Component {
   render() {
     if (this.state.loading) {
       return <View style={styles.background}>
-
              </View>
     } 
    else  {

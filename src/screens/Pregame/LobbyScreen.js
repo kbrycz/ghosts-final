@@ -37,6 +37,7 @@ class LobbyScreen extends React.Component {
     }
     
 
+    // Gets the amount of players required to join the lobby to start
     getPlayersLeft = () => {
         const totalPlayers = this.state.gameData.numPlayers
         const playersInLobbyLength = this.state.gameData.isCreated ? this.state.playersInLobby.length - 1 : this.state.playersInLobby.length
@@ -47,10 +48,10 @@ class LobbyScreen extends React.Component {
 
     componentDidMount() {
 
+        // If the screen gets focus, update the gamedata field
         this._unsubscribe = this.props.navigation.addListener('focus', () => {
             console.log("focused")
             if (this.props.route.params.isEdited && !this.state.hasBeenEdited) {
-                console.log("Updating values")
                 this.setState({
                     gameData: this.props.route.params.gameData,
                     hasBeenEdited: true,

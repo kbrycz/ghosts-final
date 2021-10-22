@@ -10,6 +10,7 @@ const ConfirmationComponent = ({gameFunction, currentPlayerName, updateCurrentPl
     const [modalVisible, setModalVisible] = useState(false);
     const [modalText, setModalText] = useState('');
 
+    // Sends the player to the lobby
     const goToLobby = () => {
         if (currentPlayerName.length > 1) {
             gameFunction()

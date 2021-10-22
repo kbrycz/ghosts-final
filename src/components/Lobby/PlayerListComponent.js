@@ -4,6 +4,7 @@ import {View, StyleSheet, Text, FlatList, TouchableOpacity, Dimensions} from 're
 
 const PlayerListComponent = ({player, readyUp, localPlayerId}) => {
 
+    // Allows for the host style to have the border
     const hostStyle1 = (isHost) => {
         if (isHost) {
             return {
@@ -12,6 +13,7 @@ const PlayerListComponent = ({player, readyUp, localPlayerId}) => {
         }
     }
 
+    // Render the ready up button component
     const renderElements = () => {
         // If player is the local player
         if (player.id === localPlayerId) {

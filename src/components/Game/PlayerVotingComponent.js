@@ -6,6 +6,7 @@ import * as Color from '../../../global/Color'
 
 const PlayerVotingComponent = ({isWatching, player, votesNeeded, votedId, updateVotedId, isDead, isGhost, localPlayerId, isPlayerRound}) => {
 
+    // Makes the host have the top border
     const hostStyle1 = (id) => {
         if (id === 0) {
             return {
@@ -14,6 +15,7 @@ const PlayerVotingComponent = ({isWatching, player, votesNeeded, votedId, update
         }
     }
 
+    // Dead players are faded out
     const deadStyle = (d) => {
         if (d) {
             return {

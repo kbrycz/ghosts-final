@@ -7,7 +7,6 @@ const CodeComponent = ({checkRoomName}) => {
 
     const [code, setCode] = useState('')
 
-
     return (
         <>
             <Text style={styles.title}>Enter the Game Code</Text>

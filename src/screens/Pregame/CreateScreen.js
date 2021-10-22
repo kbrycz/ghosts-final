@@ -38,13 +38,6 @@ class CreateScreen extends React.Component {
         }
     }
 
-    // {
-    //     id: i,
-    //     subs: ['Lions', 'Bears', 'Packers', 'Chiefs', 'Patriots', 'Rams', 'Chargers', 'Giants'],
-    //     topic: 'NFL Teams',
-    //     userCompleted: false
-    // }
-
     // Fetches temp sets
     fetchSets = () =>  {
         let temp = []
@@ -134,11 +127,11 @@ class CreateScreen extends React.Component {
                 modalVisible: true,
             })
         });
+
         // If room was created successfully, get ready to prepare game
         Global.socket.on('createRoom', code => {
             console.log("Room Created successfully: " + code)
             this.getReadyForGame(code)
-            
         }) 
         this.fetchSets()
     }
@@ -374,7 +367,6 @@ class CreateScreen extends React.Component {
                                                 text="Unable to connect to the server. Please try again!" buttonText={"OK"} />
                     </SafeAreaView>
                 </HideKeyboard>
-                
             </View>
             </>
         )

@@ -25,6 +25,7 @@ class HomeScreen extends React.Component {
         this.fadeIn()
     }
 
+    // Fading from the splash screen
     fadeIn = () => {
         // Will change fadeAnim value to 1 in 5 seconds
         Animated.timing(this.state.fadeAnim, {

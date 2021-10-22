@@ -4,6 +4,7 @@ import * as Color from '../../../global/Color'
 
 const EndComponent = ({topic, isCorrect, ghostsWin, returnHome, rejoinLobby}) => {
 
+    // Renders what the winning paragraph is depending on player side
     const renderParagraph = () => {
         if (ghostsWin && isCorrect) {
             return  <Text style={styles.counter}>

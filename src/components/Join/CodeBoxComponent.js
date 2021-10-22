@@ -9,10 +9,7 @@ const CodeBoxComponent = ({setValue, value}) => {
     const CELL_COUNT = 5;
     const [modalVisible, setModalVisible] = useState(false)
     const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
-    const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-      value,
-     setValue,
-    });
+    const [props, getCellOnLayoutHandler] = useClearByFocusCell({value, setValue});
     const text = "Could not find a code from clipboard. Try again!"
 
     // Gets the clipboard text from the users phone

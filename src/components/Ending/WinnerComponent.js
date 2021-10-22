@@ -5,6 +5,7 @@ import * as Color from '../../../global/Color'
 const WinnerComponent = ({isWatching, ghostsWin, isGhost, moveToScreen}) => {
 
 
+    // Renders the text for who won
     const renderWinStatus = () => {
         if (ghostsWin) {
             return (<><Text style={styles.title}>Congratulations to the...</Text>
@@ -16,6 +17,7 @@ const WinnerComponent = ({isWatching, ghostsWin, isGhost, moveToScreen}) => {
         }
     }
 
+    // Allows host on created game to see what humans see
     const switchToHuman = () => {
         if (isWatching || !isGhost) {
             return false

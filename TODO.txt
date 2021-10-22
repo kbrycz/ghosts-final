@@ -1,25 +1,10 @@
 ************TODO NEXT TIME***********
-
-************BACKLOG***********  
-
-- Set up server
 - Major bug testing
-- Clean up styling of code
 - Get screenshots of app for app store,
 - Set up app store stuff and begin beta testing
-
-
-
-
-
-
-
+************BACKLOG***********  
 
 ************GENERAL IDEAS***********
-
-
-
-
 
 ************V2 Ideas***********
 - Add ads to the game

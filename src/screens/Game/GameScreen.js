@@ -166,7 +166,6 @@ class GameScreen extends React.Component {
             this.setState({
                 loadingContent: false
             })
-            console.log(this.state.localPlayer)
         })
     }
 
@@ -193,6 +192,7 @@ class GameScreen extends React.Component {
     // All socket functions
     socketFunctions = () => {
         
+        // Updates the players array from the server
         Global.socket.on('updatePlayers', (players) => {
             console.log("updating the players array from host (host not included)")
             this.setState({
@@ -200,6 +200,7 @@ class GameScreen extends React.Component {
             })
         })
 
+        // Triggers when all the votes are in for both rounds
         Global.socket.on('votingFinished', async (obj) => {
             console.log("This player has been picked: " + obj.startingPlayerId)
             this.setState({loading: this.state.localPlayer.isGhost || this.state.status === 2, players: obj.players}, () => {
@@ -244,9 +245,9 @@ class GameScreen extends React.Component {
                     
                 })
             }, 1000);
-            
         })
 
+        // Lets players know when a ghost has guessed
         Global.socket.on('ghostGuessed', (obj) => {
             console.log("One of the ghosts has guessed")
             if (obj.isRight) {
@@ -310,14 +311,13 @@ class GameScreen extends React.Component {
         })
     }
 
-    // Returns the user to the home screen when the host quits
+    // Returns the user to the home screen when the host quits or exits simple modal
     closeModal = () => {
         if (this.state.isGoingHome) {
             this.returnHome()
         } else {
             this.setState({modalVisible: false})
         }
-        
     }
 
     // Make sure there are still people in the lobby

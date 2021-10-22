@@ -18,6 +18,7 @@ const StoreItemComponent = ({gamePack, purchaseGamePack}) => {
 
     const [modalExitVisible, setModalExitVisible] = React.useState(false)
 
+    // Has the first container have the border
     const containerStyle = (id) => {
         if (id === 0) {
             return {

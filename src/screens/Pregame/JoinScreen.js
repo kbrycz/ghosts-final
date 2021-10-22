@@ -119,7 +119,6 @@ class JoinScreen extends React.Component {
                 isJoining: true
             }, () => Global.socket.emit('addPlayerToLobby', obj))
         })
-        
     }
 
     // Calls server to check whether the room name is available

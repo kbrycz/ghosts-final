@@ -19,7 +19,6 @@ const VotedOutComponent = ({player, moveToScreen, isGhost}) => {
                         <Text style={styles.playButton}>Continue</Text>
                   </TouchableOpacity>
             }
-            
         </View>
         
     )

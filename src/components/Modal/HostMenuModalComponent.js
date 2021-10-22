@@ -4,7 +4,6 @@ import * as Color from '../../../global/Color'
 
 const HostMenuModalComponent = ({modalVisible, setModalVisible, editGame, newGame, quit}) => {
 
-    
     return (
             <Modal
                 animationType="slide"

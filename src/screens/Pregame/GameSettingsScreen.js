@@ -340,8 +340,6 @@ class GameSettingsScreen extends React.Component {
         this.props.navigation.navigate('StoreLobby')
     }
 
-
-
     // Figures out which order of screens to show
     organizeScreens = () => {
         if (this.state.gameState === 0) {
@@ -355,6 +353,7 @@ class GameSettingsScreen extends React.Component {
         }
     }
 
+    // Renders screen for if game was created before
     renderEditCreated = () => {
         switch (this.state.status) {
             case 0:
@@ -371,6 +370,7 @@ class GameSettingsScreen extends React.Component {
         }
     }
 
+    // Renders screen for if game was premade before
     renderEditPremade = () => {
         switch (this.state.status) {
             case 0:
@@ -380,6 +380,7 @@ class GameSettingsScreen extends React.Component {
         }
     }
 
+    // Renders screen for if game is new
     renderNewGame = () => {
         switch (this.state.status) {
             case 0:

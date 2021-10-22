@@ -2,8 +2,6 @@ import React from 'react'
 import {StyleSheet, ImageBackground, Dimensions} from 'react-native'
 
 const BackgroundImage = () => {
-
-
     return (
         <ImageBackground source={require('../../../assets/background.png')} style={styles.image} />
     )

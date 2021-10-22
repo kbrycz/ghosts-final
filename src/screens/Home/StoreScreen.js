@@ -20,6 +20,7 @@ class AboutScreen extends React.Component {
         this.getGamePacks()
     }
 
+    // Gets the game packs
     getGamePacks = () => {
         let gps = []
 
@@ -45,6 +46,7 @@ class AboutScreen extends React.Component {
         this.setState({gamePacks: gps, loadingContent: false})
     }
 
+    // User purchases game pack
     purchaseGamePack = (id) => {
         console.log("purchasing game pack " + id)
     }
