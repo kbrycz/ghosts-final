@@ -1,24 +1,24 @@
 ************TODO NEXT TIME***********
-- Add a sound to the waiting screen
-************BACKLOG***********  
-- Have a win screen for whoever team
-    - Disconnect all players from socket here besides host
-    - Have a button to leave lobby or return to game
-    - Leaving lobby simply returns to home screen
-    - Return to lobby reconnects the user to the socket and joins the game
-- When host returns, have a pop up tell him to start a new game so 
-  they don't all get the same words
-- Handle when player leaves the game
-    - Must notify all players and handle all the numplayers/numghosts variables
-    - Have to make new variables to keep track of players in the game currently outside of gamedata
-
-- 
 - Add a hint screen to every players screen in the game
-- Make sure that the premade list has max number of players at 12
-- Double click to join problem
-    - If click join lobby really fast, then two of the same user show up
-- Make it so you cant vote for yourself
-- Make the premade game sets have an icon based on easy medium hard
+- Get app icon
+
+************BACKLOG***********  
+
+- Clean up UI
+    - Mainly IPAD
+- Set up server
+- Major bug testing
+- Clean up styling of code
+- Get screenshots of app for app store,
+- Set up app store stuff and begin beta testing
+
+
+
+
+
+
+
+
 ************GENERAL IDEAS***********
 
 
@@ -28,10 +28,10 @@
 ************V2 Ideas***********
 - Add ads to the game
 - Add game packs to the store
-- Have delay between voting screen and the next page when vote count happens
 - Have the game show the names of the ghosts who guessed correctly
-- Add a user completed feature
-
+- Allow users to stay in the lobby of the game after the game finishes
+    - When host returns, have a pop up tell him to start a new game so 
+        they don't all get the same words
 
 
 ************Vinf IDEAS***********
@@ -39,3 +39,7 @@
     - In this feature, be able to click on a person and see all of their previous answers.
 
 - Make it so the server saves some data of the people playing to get statistics
+- Add a user completed feature
+- Add animations in between status changes
+    - Have delay between voting screen and the next page when vote count happens
+    

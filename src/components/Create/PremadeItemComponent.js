@@ -21,17 +21,25 @@ const PremadeItemComponent = ({set, selectSet}) => {
         }
     }
 
+    const getDifficulty = () => {
+        if (set.diff === 0) {
+            return <Text style={styles.diff}>(E)</Text>
+        }
+        else if (set.diff === 1) {
+            return <Text style={styles.diff}>(M)</Text>
+        }
+        else {
+            return <Text style={styles.diff}>(H)</Text>
+        }
+    }
+
     return (
-        <View style={[styles.container, containerStyle(set.id)]}>
-            {set.userCompleted
-            ? <EvilIcons name="check" style={styles.icon} />
-            : <Entypo name="new" style={styles.icon} />
-            }
-            
+        <View style={[styles.container, containerStyle(set.id)]}>   
+            {getDifficulty()}         
             <TouchableOpacity 
             onPress={() => selectSet(set)}
             style={styles.wordContainer}>
-                <Text style={styles.word}>Dataset #{set.id + 1}</Text>
+                <Text style={styles.word}>{set.title}</Text>
             </TouchableOpacity>
         </View>
     )
@@ -56,12 +64,13 @@ const styles = StyleSheet.create({
         fontSize: Dimensions.get('window').height * .03,
         fontFamily: 'PatrickHand',
     },
-    icon: {
+    diff: {
         flex: 1,
-        fontSize: Dimensions.get('window').height * .03,
+        fontSize: Dimensions.get('window').height * .02,
         color: '#dbdff2',
         textAlign: 'center',
         marginTop: Dimensions.get('window').height * .009,
+        fontFamily: 'PatrickHand',
     }
 
 })

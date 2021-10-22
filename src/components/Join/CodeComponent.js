@@ -25,16 +25,20 @@ const CodeComponent = ({checkRoomName}) => {
 const styles = StyleSheet.create({
     playButton: {
         width: Dimensions.get('window').width * .8,
+        marginTop: Dimensions.get('window').height * .02,
         marginLeft: Dimensions.get('window').width * .1,
         marginRight: Dimensions.get('window').width * .1,
         color: Color.MAIN,
-        fontSize: Dimensions.get('window').height * .035,
+        fontSize: Dimensions.get('window').height * .03,
+        letterSpacing: Dimensions.get('window').width * .01,
+        textTransform: 'uppercase',
         textAlign: 'center',
         borderWidth: 1,
-        borderColor: Color.MAIN,
+        borderColor: Color.TEXT,
         borderRadius: 10,
-        backgroundColor: '#fff',
+        backgroundColor: Color.TEXT,
         padding: Dimensions.get('window').height * .01,
+        paddingBottom: Dimensions.get('window').height * .02,
         overflow: 'hidden',
         fontFamily: 'PatrickHand'
     },

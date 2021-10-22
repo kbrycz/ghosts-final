@@ -4,7 +4,19 @@ import { StyleSheet, Text, Dimensions, View, TouchableOpacity, FlatList, SafeAre
 import PlayerVotingComponent from './PlayerVotingComponent'
 import * as Color from '../../../global/Color'
 
-const GhostChooseComponent = ({titleText, players, votesNeeded, votedId, updateVotedId, isDead, isGhost, word}) => {
+const GhostChooseComponent = ({isWatching, titleText, players, votesNeeded, votedId, updateVotedId, isDead, isGhost, word, localPlayerId, isPlayerRound}) => {
+
+    const renderBottom = () => {
+        if (isWatching) {
+            return <Text style={styles.word}>You are the host</Text>
+        }
+        else if (isGhost) {
+            return <Text style={styles.word}>You are a *Ghost*</Text>
+        }
+        else {
+            return <Text style={styles.word}>Your word is *{word}*</Text>
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -14,14 +26,12 @@ const GhostChooseComponent = ({titleText, players, votesNeeded, votedId, updateV
             <FlatList
                 data={players}
                 renderItem={({ item }) => (
-                <PlayerVotingComponent votedId={votedId} updateVotedId={updateVotedId} isGhost={isGhost} isDead={isDead} votesNeeded={votesNeeded} player={item}/>
+                <PlayerVotingComponent isWatching={isWatching} votedId={votedId} updateVotedId={updateVotedId} isGhost={isGhost} isDead={isDead} 
+                votesNeeded={votesNeeded} player={item} localPlayerId={localPlayerId} isPlayerRound={isPlayerRound} />
                 )}
                 keyExtractor={item => item.id.toString()}
                 style={styles.list} />
-            {isGhost
-            ? <Text style={styles.word}>You are a *{word}*</Text>
-            : <Text style={styles.word}>Your word is *{word}*</Text>
-            }
+            {renderBottom()}
             
         </View>
     )

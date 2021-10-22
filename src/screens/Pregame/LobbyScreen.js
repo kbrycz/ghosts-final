@@ -27,7 +27,8 @@ class LobbyScreen extends React.Component {
             isGoingHome: false,
             hasBeenEdited: false,
             code: '',
-            modalText: ''
+            modalText: '',
+            startingGame: false
         }
     }
 
@@ -128,16 +129,24 @@ class LobbyScreen extends React.Component {
             this.setState({loading: false})
             for (let i = 0; i < obj.players.length; ++i) {
                 if (obj.players[i].id === this.state.localPlayer.id) {
-                    this.props.navigation.navigate("Game", {screen: 'Gameplay', params: {gameData: obj.gameData, players: obj.players, 
-                        playersInLobby: this.state.playersInLobby, localPlayer: obj.players[i]}})
+                    this.props.navigation.navigate("Game", {screen: 'Gameplay', params: {gameData: obj.gameData, players: obj.players, localPlayer: obj.players[i]}})
                     return
                 }
+            }
+
+            if (this.state.localPlayer.isWatching) {
+                let localPlayerTemp = this.state.localPlayer
+                localPlayerTemp.word = "Host"
+                localPlayerTemp.isGhost = true
+                this.props.navigation.navigate("Game", {screen: 'Gameplay', params: {gameData: obj.gameData, players: obj.players, localPlayer: localPlayerTemp}})
+                return
             }
 
             // return user to main screen and show them a modal
             console.log("Unable to play game because id couldnt be found")
             this.setState({
-                isGoingHome: true
+                isGoingHome: true,
+                modalText: 'Unable to play game. Returning to home screen.'
             }, () => this.setModalVisible(true))
         
 
@@ -326,21 +335,27 @@ class LobbyScreen extends React.Component {
 
     // Start the game and notifiy the server
     startGame = () => {
-        this.setState({loading: true})
-        let tempPlayers = this.state.playersInLobby.slice()
-        if (this.state.gameData.isCreated) {
-            tempPlayers.splice(0, 1)
+        if (this.state.startingGame) {
+            return
         }
-
-        if (!this.state.gameData.isCreated) {
-            this.getGameData()
-        } 
-        let obj = {
-            code: this.state.code,
-            gameData: this.state.gameData,
-            players: tempPlayers
-        }
-        Global.socket.emit('startGame', obj)
+        this.setState({loading: true, startingGame: true}, () => {
+            let tempPlayers = this.state.playersInLobby.slice()
+            if (this.state.gameData.isCreated) {
+                tempPlayers.splice(0, 1)
+            }
+    
+            if (!this.state.gameData.isCreated) {
+                this.getGameData()
+            } 
+            console.log(this.state.gameData)
+            let obj = {
+                code: this.state.code,
+                gameData: this.state.gameData,
+                players: tempPlayers
+            }
+            Global.socket.emit('startGame', obj)
+        })
+        
 
     }
 

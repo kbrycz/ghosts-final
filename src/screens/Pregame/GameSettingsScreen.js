@@ -74,42 +74,79 @@ class GameSettingsScreen extends React.Component {
     // Fetches temp sets
     fetchSets = () =>  {
         let temp = []
+
         let set1 = {
             id: 0,
-            topic: 'Disney movies',
-            subs: ['Lion king', 'Aladdin', 'Frozen', 'Moana', 'Hercules', 'Mulan', 'Tarzan', 'Tangled', 'Bambi', 'Dumbo', 'Zootopia', 'Pinocchio'],
-            userCompleted: false
+            title: 'Word Set 1',
+            topic: 'Books',
+            subs: ['The Great Gatsby', 'Tom Sawyer', 'The Hobbit', 'Harry Potter', 'Romeo and Juliet', 'The Giver', 'Jane Eyre'],
+            userCompleted: false,
+            diff: 0
         }
         let set2 = {
             id: 1,
-            topic: 'Books',
-            subs: ['To Kill a Mockingbird', 'Lord of the Flies', 'Animal Farm', 'Catcher in the Rye', 'The Great Gatsby', 
-            'Of Mice and Men', 'The Adventures of Tom Sawyer', 'The Hobbit', 'Harry Potter', 'Romeo and Juliet', 'The Giver', 'Jane Eyre'],
-            userCompleted: false
+            title: 'Word Set 2',
+            topic: 'Candy',
+            subs: ['Air Heads', 'Jolly Rancher', 'Skittles', 'Kit Kat', 'Laffy Taffy', 'Pez', 'Tootsie Roll', 'Ring Pops', 'Twizzlers'],
+            userCompleted: false,
+            diff: 0
         }
         let set3 = {
             id: 2,
-            topic: 'Candy',
-            subs: ['Air Heads', 'Jolly Rancher', 'Life Savers', 'Pop Rocks', 'Skittles', 'Kit Kat', 'Sour Patch Kids', 'Laffy Taffy', 'Pez', 'Tootsie Roll', 'Ring Pops', 'Twizzlers'],
-            userCompleted: false
+            title: 'Word Set 3',
+            topic: 'Furniture',
+            subs: ['Chair', 'Couch', 'Table', 'Loveseat', 'Ottoman', 'Bed', 'Desk'],
+            userCompleted: false,
+            diff: 0
         }
         let set4 = {
             id: 3,
-            topic: 'Pizza Toppings',
-            subs: ['Pepperoni', 'Mushroom', 'Sausage', 'Black olives', 'Green pepper', 'Pineapple', 'Ham', 'Kale', 'Jalapenos', 'Bacon', 'Chicken', 'Spinach'],
-            userCompleted: false
+            title: 'Word Set 4',
+            topic: 'NFL Teams',
+            subs: ['Cardinals', 'Lions', 'Patriots', 'Chiefs', 'Dolphins', 'Vikings', 'Giants'],
+            userCompleted: false,
+            diff: 1
         }
         let set5 = {
             id: 4,
+            title: 'Word Set 5',
+            topic: 'Disney movies',
+            subs: ['Lion king', 'Aladdin', 'Frozen', 'Moana', 'Hercules', 'Mulan', 'Tarzan', 'Tangled', 'Bambi', 'Pinocchio'],
+            userCompleted: false,
+            diff: 1
+        }
+        let set6 = {
+            id: 5,
+            title: 'Word Set 6',
+            topic: 'Pizza Toppings',
+            subs: ['Pepperoni', 'Mushroom', 'Sausage', 'Black olives', 'Pineapple', 'Ham',  'Bacon'],
+            userCompleted: false,
+            diff: 1
+        }
+        let set7 = {
+            id: 6,
+            title: 'Word Set 7',
             topic: 'Video Game Characters',
-            subs: ['Mario', 'Luigi', 'Master Chief', 'Zelda', 'Bowser', 'Sonic', 'Ash Ketchum', 'Tom Nook', 'Pac-Man', 'Lara Croft', 'Mega Man', 'Pikachu'],
-            userCompleted: false
+            subs: ['Mario', 'Master Chief', 'Zelda', 'Bowser', 'Sonic', 'Ash Ketchum', 'Tom Nook', 'Pac-Man', 'Lara Croft', 'Pikachu'],
+            userCompleted: false,
+            diff: 2
+        }
+        let set8 = {
+            id: 7,
+            title: 'Word Set 8',
+            topic: 'Clothing Brands',
+            subs: ['Nike', 'Louis Vuitton', 'Gucci', 'Adidas', 'Zara', 'H&M', 'Lululemon'],
+            userCompleted: false,
+            diff: 2
         }
         temp.push(set1)
         temp.push(set2)
         temp.push(set3)
         temp.push(set4)
         temp.push(set5)
+        temp.push(set6)
+        temp.push(set7)
+        temp.push(set8)
         this.setState({
             premadeSets: temp
         })
@@ -176,6 +213,7 @@ class GameSettingsScreen extends React.Component {
         set.subs = this.state.subList
         set.topic = this.state.topic
         set.userCompleted = false
+        set.title = "User Created"
         if (this.state.gameState === 0) {
             this.setState({
                 finalSet: set,

@@ -39,9 +39,6 @@ const EndComponent = ({topic, isCorrect, ghostsWin, returnHome, rejoinLobby}) =>
             <TouchableOpacity onPress={returnHome}>
                 <Text style={styles.playButton}>Leave</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={rejoinLobby}>
-                <Text style={styles.playButton}>Play Again</Text>
-            </TouchableOpacity>
         </View>
         
     )

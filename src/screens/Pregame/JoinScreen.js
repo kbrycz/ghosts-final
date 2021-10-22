@@ -22,6 +22,7 @@ class JoinScreen extends React.Component {
             codeToJoin: '',
             modalVisible: false,
             localPlayer: {},
+            isJoining: false
         }
     }
 
@@ -41,6 +42,16 @@ class JoinScreen extends React.Component {
             console.log("The room does not exist: " + code)
             this.setState({
                 text: "This game does not exist. Please try another one!",
+                modalVisible: true,
+                loading: false
+            })
+        }) 
+
+        // If the room exists, send user to the name screen
+        Global.socket.on('roomFull', () => {
+            console.log("The room is full")
+            this.setState({
+                text: "This game is full. Please try another one!",
                 modalVisible: true,
                 loading: false
             })
@@ -77,6 +88,9 @@ class JoinScreen extends React.Component {
 
     // Calls server for user to join the game
     joinGame = () => {
+        if (this.state.isJoining) {
+            return
+        }
         this.setState({loading: true})
         console.log("user attempting to join game")
         let player = {
@@ -85,6 +99,7 @@ class JoinScreen extends React.Component {
             name: this.state.currentPlayerName,
             isReady: false,
             isHost: false,
+            isWatching: false,
             canPlay: true,
             isGhost: false,
             word: '',
@@ -99,7 +114,10 @@ class JoinScreen extends React.Component {
                 player: this.state.localPlayer,
                 roomName: this.state.codeToJoin
             }
-            Global.socket.emit('addPlayerToLobby', obj)
+
+            this.setState({
+                isJoining: true
+            }, () => Global.socket.emit('addPlayerToLobby', obj))
         })
         
     }

@@ -2,77 +2,100 @@ import React from 'react'
 import {View, StyleSheet, Text, TouchableOpacity, Dimensions, Image, ActivityIndicator} from 'react-native'
 import * as Color from '../../../global/Color'
 
-const WaitingComponent = ({word, isGhost, moveToScreen, isDead}) => {
+const WaitingComponent = ({isWatching, word, isGhost, moveToScreen, isDead}) => {
+
+    const renderElements = () => {
+        if (isWatching) {
+            return (
+                <>
+                    <Text style={styles.title}>You are the</Text>
+                    <Text style={styles.word}>Host</Text>
+                    <Text style={styles.counter}>
+                        You will just be observing this game. You will be able to see what the ghosts see. Click the button below to see what the ghosts are voting!
+                    </Text>
+                    <TouchableOpacity onPress={() => moveToScreen(1)}>
+                        <Text style={styles.playButton}>Go</Text>
+                    </TouchableOpacity>
+                </>
+            )
+        }
+        else {
+            return (
+                <>
+                    {
+                        isGhost
+                        ? <>
+                        <Text style={styles.title}>You are a</Text>
+                        <Text style={styles.word}>{word}</Text>
+                        {
+                            isDead
+                            ? <>
+                                <ActivityIndicator
+                                style={styles.activityIndicator}
+                                animating={true}
+                                size="large"
+                                color={Color.TEXT}
+                                />
+                            <Text style={styles.counter}>
+                                You are dead. You are no longer allowed to talk, but you can listen! See if you can try to piece together what the topic might be! 
+                                The ghosts are currently choosing a starting player
+                            </Text>
+
+                            </>
+                            : <>
+                                <Text style={styles.counter}>
+                                    You and the other ghosts must now vote for a player to start!
+                                </Text>
+                                <TouchableOpacity onPress={() => moveToScreen(1)}>
+                                    <Text style={styles.playButton}>Ready</Text>
+                                </TouchableOpacity>
+                            </>
+                        }
+                        
+                        </>
+                        : <>
+                        <Text style={styles.title}>Your word is:</Text>
+                        <Text style={styles.word}>{word}</Text>
+                        {
+                            isDead
+                            ? <>
+                            <ActivityIndicator
+                            style={styles.activityIndicator}
+                            animating={true}
+                            size="large"
+                            color={Color.TEXT}
+                            />
+                            <Text style={styles.counter}>
+                                You are dead. You are no longer allowed to speak or contribute to the game!
+                                You are now waiting for the ghosts to choose who they would like to start the round!
+                            </Text>
+                            </>
+                            : <>
+                            <ActivityIndicator
+                            style={styles.activityIndicator}
+                            animating={true}
+                            size="large"
+                            color={Color.TEXT}
+                            />
+                            <Text style={styles.counter}>
+                                Waiting for the ghosts to choose who they would like to start the round!
+                                Try to think of some clues in the meantime! Close your eyes and wait for a sound to wake you up! (Make sure your volume is up!)
+                            </Text>
+                            </>
+                        }
+                        
+                        </>
+
+                    }
+                        
+                </>
+            )
+        }
+    }
 
     return (
         <View>
-        {
-            isGhost
-            ? <>
-            <Text style={styles.title}>You are a</Text>
-            <Text style={styles.word}>{word}</Text>
-            {
-                isDead
-                ? <>
-                    <ActivityIndicator
-                    style={styles.activityIndicator}
-                    animating={true}
-                    size="large"
-                    color={Color.TEXT}
-                    />
-                  <Text style={styles.counter}>
-                    You are dead. You are no longer allowed to talk, but you can listen! See if you can try to piece together what the topic might be! 
-                    The ghosts are currently choosing a starting player
-                  </Text>
-
-                </>
-                : <>
-                    <Text style={styles.counter}>
-                        You and the other ghosts must now vote for a player to start!
-                    </Text>
-                    <TouchableOpacity onPress={() => moveToScreen(1)}>
-                        <Text style={styles.playButton}>Ready</Text>
-                    </TouchableOpacity>
-                  </>
-            }
-            
-            </>
-            : <>
-            <Text style={styles.title}>Your word is:</Text>
-            <Text style={styles.word}>{word}</Text>
-            {
-                isDead
-                ? <>
-                <ActivityIndicator
-                  style={styles.activityIndicator}
-                  animating={true}
-                  size="large"
-                  color={Color.TEXT}
-                />
-                <Text style={styles.counter}>
-                    You are dead. You are no longer allowed to speak or contribute to the game!
-                    You are now waiting for the ghosts to choose who they would like to start the round!
-                </Text>
-                </>
-                : <>
-                <ActivityIndicator
-                  style={styles.activityIndicator}
-                  animating={true}
-                  size="large"
-                  color={Color.TEXT}
-                />
-                <Text style={styles.counter}>
-                    Waiting for the ghosts to choose who they would like to start the round!
-                    Try to think of some clues in the meantime! Close your eyes and wait for a sound to wake you up! (Make sure your volume is up!)
-                </Text>
-                </>
-            }
-            
-            </>
-
-        }
-            
-
+            {renderElements()}
         </View>
         
     )
@@ -101,16 +124,16 @@ const styles = StyleSheet.create({
         marginTop: Dimensions.get('window').height * .02,
         textAlign: 'justify',
         color: Color.TEXT,
-        fontSize: Dimensions.get('window').height * .025,
-        lineHeight: Dimensions.get('window').height * .05,
+        fontSize: Dimensions.get('window').height * .022,
+        lineHeight: Dimensions.get('window').height * .045,
         fontFamily: 'PatrickHand'
     },
     word: {
         width: Dimensions.get('window').width * .9,
         marginLeft: Dimensions.get('window').width * .05,
         marginRight: Dimensions.get('window').width * .05,
-        marginTop: Dimensions.get('window').height * .06,
-        marginBottom: Dimensions.get('window').height * .06,
+        marginTop: Dimensions.get('window').height * .05,
+        marginBottom: Dimensions.get('window').height * .05,
         paddingTop: Dimensions.get('window').height * .02,
         textAlign: 'center',
         color: Color.TEXT,
@@ -118,8 +141,8 @@ const styles = StyleSheet.create({
         textShadowOffset: {width: -2, height: 2},
         textShadowRadius: 10,
         textTransform: 'uppercase',
-        fontSize: Dimensions.get('window').height * .07,
-        lineHeight: Dimensions.get('window').height * .1,
+        fontSize: Dimensions.get('window').height * .06,
+        lineHeight: Dimensions.get('window').height * .08,
         fontFamily: 'PatrickHand'
     },
     playButton: {

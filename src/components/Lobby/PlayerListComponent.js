@@ -60,9 +60,6 @@ const styles = StyleSheet.create({
     },
     word: {
         color: '#dee5f5',
-        textShadowColor: 'rgba(0, 0, 0, 0.9)',
-        textShadowOffset: {width: -2, height: 2},
-        textShadowRadius: 10,
         textTransform: 'uppercase',
         fontSize: Dimensions.get('window').height * .03,
         fontFamily: 'PatrickHand',

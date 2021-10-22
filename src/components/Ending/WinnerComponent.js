@@ -2,7 +2,7 @@ import React from 'react'
 import {View, StyleSheet, Text, TouchableOpacity, Dimensions, Image, ActivityIndicator} from 'react-native'
 import * as Color from '../../../global/Color'
 
-const WinnerComponent = ({ghostsWin, isGhost, moveToScreen}) => {
+const WinnerComponent = ({isWatching, ghostsWin, isGhost, moveToScreen}) => {
 
 
     const renderWinStatus = () => {
@@ -16,11 +16,18 @@ const WinnerComponent = ({ghostsWin, isGhost, moveToScreen}) => {
         }
     }
 
+    const switchToHuman = () => {
+        if (isWatching || !isGhost) {
+            return false
+        }
+        return true
+    }
+
     return (
         <View>
             {renderWinStatus()}
         {
-            isGhost
+            switchToHuman()
             ? <>
             {ghostsWin
             ? <Text style={styles.counter}>

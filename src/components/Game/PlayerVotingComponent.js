@@ -4,7 +4,7 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import * as Color from '../../../global/Color'
 
 
-const PlayerVotingComponent = ({player, votesNeeded, votedId, updateVotedId, isDead, isGhost}) => {
+const PlayerVotingComponent = ({isWatching, player, votesNeeded, votedId, updateVotedId, isDead, isGhost, localPlayerId, isPlayerRound}) => {
 
     const hostStyle1 = (id) => {
         if (id === 0) {
@@ -24,7 +24,7 @@ const PlayerVotingComponent = ({player, votesNeeded, votedId, updateVotedId, isD
 
 
     const renderElement = () => {
-        if (player.isDead) {
+        if (player.isDead || (player.id === localPlayerId && isPlayerRound) || isWatching) {
             return (
                 <View style={styles.readyContainer} />
             )
@@ -94,9 +94,6 @@ const styles = StyleSheet.create({
     },
     word: {
         color: Color.TEXT,
-        textShadowColor: 'rgba(0, 0, 0, 0.9)',
-        textShadowOffset: {width: -2, height: 2},
-        textShadowRadius: 10,
         textTransform: 'capitalize',
         fontSize: Dimensions.get('window').width * .06,
         fontFamily: 'PatrickHand',

@@ -14,6 +14,7 @@ import JoinScreen from './src/screens/Pregame/JoinScreen';
 import LobbyScreen from './src/screens/Pregame/LobbyScreen';
 import GameSettingsScreen from './src/screens/Pregame/GameSettingsScreen';
 import GameScreen from './src/screens/Game/GameScreen';
+import * as SplashScreen from 'expo-splash-screen';
 
 
 // Creates stack for the Home screens
@@ -100,7 +101,8 @@ class App extends React.Component {
   // Loads all assets before screen renders
   // Allows for images and fonts to be in place when the screen is rendered
   async loadEverything() {
-
+    // Keep the splash screen visible while we fetch resources
+    await SplashScreen.preventAutoHideAsync();
     // Loads all the images
     await Asset.loadAsync([
       require('./assets/background.png'),
@@ -117,6 +119,10 @@ class App extends React.Component {
     this.setState({ 
         loading: false,
     });
+    // TODO CHANGE THIS
+    setTimeout(async () => {
+      await SplashScreen.hideAsync();
+    }, 500);
 }
  
   // Check and see if user already has a token to log user in
@@ -124,17 +130,17 @@ class App extends React.Component {
     this.loadEverything()
   }
 
+  forFade = ({ current }) => ({
+    cardStyle: {
+      opacity: current.progress,
+    },
+  });
+
   // Renders the jsx for the UI
   render() {
-    // TODO should be a loading screen
     if (this.state.loading) {
       return <View style={styles.background}>
-                <ActivityIndicator
-                    style={styles.activityIndicator}
-                    animating={this.state.loading}
-                    size="large"
-                    color={Color.TEXT}
-                />
+
              </View>
     } 
    else  {
@@ -142,13 +148,17 @@ class App extends React.Component {
           <NavigationContainer>
              <RootStack.Navigator screenOptions={{
                 headerShown: false,
-                animationEnabled: false
+                headerMode: 'none',
+                animationEnabled: true,
+                cardStyleInterpolator: this.forFade,
+                gestureEnabled: false,
               }}>
               
               <RootStack.Screen name='Home' component={HomeStack} />
               <RootStack.Screen name="Game" component={GameStack} />            
               <RootStack.Screen name='Pregame' component={PregameStack} />
-              <RootStack.Screen name="Lobby" component={LobbyStack} />
+              <RootStack.Screen options={{
+                }} name="Lobby" component={LobbyStack} />
            </RootStack.Navigator>
           </NavigationContainer>  
       );
@@ -158,7 +168,7 @@ class App extends React.Component {
 
 const styles = StyleSheet.create({
   background: {
-      backgroundColor: Color.MAIN,
+      backgroundColor: '#fff',
       height: Dimensions.get('window').height
   },
   activityIndicator: {

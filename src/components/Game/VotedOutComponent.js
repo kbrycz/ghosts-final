@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         textShadowOffset: {width: -2, height: 2},
         textShadowRadius: 10,
         textTransform: 'uppercase',
-        fontSize: Dimensions.get('window').height * .1,
+        fontSize: Dimensions.get('window').height * .07,
         lineHeight: Dimensions.get('window').height * .1,
         fontFamily: 'PatrickHand'
     },

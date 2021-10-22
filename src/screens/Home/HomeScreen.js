@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, StyleSheet, Dimensions, SafeAreaView, Text, TouchableOpacity} from 'react-native'
+import {View, StyleSheet, Dimensions, SafeAreaView, Text, TouchableOpacity, Animated} from 'react-native'
 import * as Color from '../../../global/Color'
 import BackgroundImage from '../../components/General/BackgroundImage'
 import LoadingIndicator from '../../components/General/LoadingIndicator'
@@ -17,8 +17,22 @@ class HomeScreen extends React.Component {
             loading: false,
             text: '',
             modalVisible: false,
+            fadeAnim: new Animated.Value(0)
         }
     }
+
+    componentDidMount() {
+        this.fadeIn()
+    }
+
+    fadeIn = () => {
+        // Will change fadeAnim value to 1 in 5 seconds
+        Animated.timing(this.state.fadeAnim, {
+          toValue: 1,
+          useNativeDriver: true,
+          duration: 900
+        }).start();
+      };
 
     // Set the simple modal component variable
     setModalVisible = (isVis) => {
@@ -55,7 +69,7 @@ class HomeScreen extends React.Component {
 
     render() {
         return (
-            <>
+            <Animated.View style={{opacity: this.state.fadeAnim}}>
             <BackgroundImage />
             <View style={styles.container}>
                 <LoadingIndicator loading={this.state.loading} />
@@ -87,7 +101,7 @@ class HomeScreen extends React.Component {
                 </SafeAreaView>
                 
             </View>
-            </>
+            </Animated.View>
         )
     }
     
@@ -122,7 +136,7 @@ const styles = StyleSheet.create({
         textShadowColor: 'rgba(0, 0, 0, 0.5)',
         textShadowOffset: {width: -1, height: 1},
         textShadowRadius: 10,
-        letterSpacing: Dimensions.get('window').height * .008,
+        letterSpacing: Dimensions.get('window').height * .004,
         fontSize: Dimensions.get('window').height * .025,
         lineHeight: Dimensions.get('window').height * .05,
         fontFamily: 'PatrickHand'
