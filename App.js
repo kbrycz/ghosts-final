@@ -43,8 +43,10 @@ const GameStack = () => {
         initialRouteName="Gameplay"
         screenOptions={{
           headerShown: false,
+          presentation: 'modal'
         }}>
         <Game.Screen name="Gameplay" component={GameScreen} />
+        <Game.Screen name="HowToScreen" component={HowToScreen} />
     </Game.Navigator>
   )
 }

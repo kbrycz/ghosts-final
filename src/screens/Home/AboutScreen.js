@@ -18,8 +18,8 @@ class AboutScreen extends React.Component {
                 <CircleComponent />
                 <Text style={styles.headerText}>About</Text>
                 <Text style={styles.version}>1.0.0</Text>
-                <Text style={styles.p}>Alligator Games LLC is a Chicago based company specializing in party games. Our mission
-                                        is to bring joy to our users through group party games. </Text>
+                <Text style={styles.p}>Alligator Games LLC is dedicated to providing you with all sorts of games and apps to bring your group closer together! 
+                                        Before your next party gets dull, come check out what we have to offer!</Text>
                 <Text style={styles.p}>"Ghosts" is our first game to be released to the app store! 
                                         To view more of our work, check out our website: https://alligator.games!</Text>
                 <Text style={styles.p}>More games are on the way! Keep an eye out for our releases!</Text>

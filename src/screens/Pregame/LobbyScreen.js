@@ -2,7 +2,7 @@ import React from 'react'
 import {View, StyleSheet, Dimensions, TouchableOpacity, Text, SafeAreaView, FlatList, Clipboard} from 'react-native'
 import * as Color from '../../../global/Color'
 import * as Global from '../../../global/Global'
-import { FontAwesome5, Feather } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import PlayerListComponent from '../../components/Lobby/PlayerListComponent';
 import BackgroundImage from '../../components/General/BackgroundImage';
 import LoadingIndicator from '../../components/General/LoadingIndicator';

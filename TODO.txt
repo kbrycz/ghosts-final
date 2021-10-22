@@ -1,11 +1,7 @@
 ************TODO NEXT TIME***********
-- Add a hint screen to every players screen in the game
-- Get app icon
 
 ************BACKLOG***********  
 
-- Clean up UI
-    - Mainly IPAD
 - Set up server
 - Major bug testing
 - Clean up styling of code

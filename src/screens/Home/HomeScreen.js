@@ -30,7 +30,7 @@ class HomeScreen extends React.Component {
         Animated.timing(this.state.fadeAnim, {
           toValue: 1,
           useNativeDriver: true,
-          duration: 900
+          duration: 1000
         }).start();
       };
 

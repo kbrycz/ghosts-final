@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, StyleSheet, SafeAreaView, Dimensions, Image, Text} from 'react-native'
+import {View, StyleSheet, SafeAreaView, Dimensions, Image, TouchableOpacity} from 'react-native'
 import CircleComponent from '../../components/General/CircleComponent'
 import * as Color from '../../../global/Color'
 import BackgroundImage from '../../components/General/BackgroundImage'
@@ -14,6 +14,8 @@ import WaitingForOtherGhostsComponent from '../../components/Ending/WaitingForOt
 import EndComponent from '../../components/Ending/EndComponent'
 import { Audio } from 'expo-av';
 import SimpleModalComponent from '../../components/Modal/SimpleModalComponent'
+import { Feather } from '@expo/vector-icons';
+
 
 class GameScreen extends React.Component {
 
@@ -529,6 +531,9 @@ class GameScreen extends React.Component {
                 <View style={styles.container}>
                     <LoadingIndicator loading={this.state.loading} />
                     <SafeAreaView style={styles.safe}>
+                        <TouchableOpacity style={{zIndex: 10}} onPress={() => this.props.navigation.navigate('HowToScreen')} >
+                            <Feather name="info" style={styles.rules} />
+                        </TouchableOpacity>
                         {this.renderGameScreens()}
                     </SafeAreaView>
                     <SimpleModalComponent modalVisible={this.state.modalVisible} setModalVisible={this.closeModal} 
@@ -543,6 +548,13 @@ class GameScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         height: Dimensions.get('window').height,
+    },
+    rules: {
+        fontSize: Dimensions.get('window').height * .03,
+        color: Color.TEXT,
+        position: 'absolute',
+        top: 5,
+        right: Dimensions.get('window').width * .04,
     },
 })
 
