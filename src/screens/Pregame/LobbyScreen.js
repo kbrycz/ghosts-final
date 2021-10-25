@@ -54,9 +54,11 @@ class LobbyScreen extends React.Component {
             if (this.props.route.params.isEdited && !this.state.hasBeenEdited) {
                 this.setState({
                     gameData: this.props.route.params.gameData,
+                    localPlayer: this.props.route.params.localPlayer,
                     hasBeenEdited: true,
                 }, () => {
                     this.getPlayersLeft()
+                    console.log(this.state.gameData)
                 })
             }
           });
@@ -172,7 +174,7 @@ class LobbyScreen extends React.Component {
             if (this.state.playersInLobby[i].id === id) {
                 p.isReady = true
             }
-            tempArray.push(this.state.playersInLobby[i])
+            tempArray.push(p)
         }
 
         this.setState({
@@ -260,16 +262,16 @@ class LobbyScreen extends React.Component {
     // If host trys to create a new game
     newGame = () => {
         this.setState({modalMenuVisible: false, hasBeenEdited: false})
-        this.props.navigation.navigate("GameSettings", {gameState: 2})
+        this.props.navigation.navigate("GameSettings", {gameState: 2, code: this.state.gameData.code, localPlayer: this.state.localPlayer})
     }
 
     // If host trys to edit the game
     editGame = () => {
         this.setState({modalMenuVisible: false, hasBeenEdited: false})
         if (this.state.gameData.isCreated) {
-            this.props.navigation.navigate("GameSettings", {gameState: 0, gameData: this.state.gameData})
+            this.props.navigation.navigate("GameSettings", {gameState: 0, gameData: this.state.gameData, localPlayer: this.state.localPlayer })
         } else {
-            this.props.navigation.navigate("GameSettings", {gameState: 1})
+            this.props.navigation.navigate("GameSettings", {gameState: 1, code: this.state.gameData.code, localPlayer: this.state.localPlayer})
         }
     }
 

@@ -17,12 +17,19 @@ class HomeScreen extends React.Component {
             loading: false,
             text: '',
             modalVisible: false,
-            fadeAnim: new Animated.Value(0)
+            fadeAnim: new Animated.Value(0),
+            connected: false,
         }
     }
 
     componentDidMount() {
         this.fadeIn()
+
+        // If the screen gets focus, update the gamedata field
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            console.log("in here")
+            this.setState({connected: false})
+        });
     }
 
     // Fading from the splash screen
@@ -31,7 +38,7 @@ class HomeScreen extends React.Component {
         Animated.timing(this.state.fadeAnim, {
           toValue: 1,
           useNativeDriver: true,
-          duration: 1000
+          duration: 4500
         }).start();
       };
 
@@ -42,9 +49,15 @@ class HomeScreen extends React.Component {
 
     // Connect to the server and be able to move onto the correct screen
     connectToServer = (screen) => {
+        if (this.state.connected) {
+            console.log("Already connected to server")
+            return
+        }
         this.setState({
-            loading: true
+            loading: true,
+            connected: true
         }, () => {
+            
             Global.socket = io(Global.server)
             Global.socket.connect()
             
@@ -53,6 +66,7 @@ class HomeScreen extends React.Component {
                 console.log('Connection Failed');
                 this.setState({
                     loading: false,
+                    connected: false,
                     text: 'Cannot connect to the server. Please try again!',
                     modalVisible: true,
                 })

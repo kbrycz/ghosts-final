@@ -42,7 +42,8 @@ class GameScreen extends React.Component {
             modalVisible: false,
             isGoingHome: false,
             modalText: '',
-            hasGuessed: false
+            hasGuessed: false,
+            doneVoting: false
         }
     }
 
@@ -203,7 +204,7 @@ class GameScreen extends React.Component {
         // Triggers when all the votes are in for both rounds
         Global.socket.on('votingFinished', async (obj) => {
             console.log("This player has been picked: " + obj.startingPlayerId)
-            this.setState({loading: this.state.localPlayer.isGhost || this.state.status === 2, players: obj.players}, () => {
+            this.setState({loading: this.state.localPlayer.isGhost || this.state.status === 2, players: obj.players, doneVoting: true}, () => {
                 if (this.state.status !== 2) {
                     console.log("Playing sound!")
                     this.playSound()
@@ -242,6 +243,7 @@ class GameScreen extends React.Component {
                     players: tempPlayers,
                     chosenPlayerId: obj.startingPlayerId,
                     loading: false,
+                    doneVoting: false
                     
                 })
             }, 1000);
@@ -464,6 +466,9 @@ class GameScreen extends React.Component {
 
     // Updates the votedIds in the ghost and normal rounds
     updateVotedId = (i, amount, votesNeeded) => {
+        if (this.state.doneVoting) {
+            return 
+        }
         let tempPlayers = this.state.players
         if (amount  < 0) {
             this.setState({
@@ -479,17 +484,22 @@ class GameScreen extends React.Component {
         let index = this.getIndexOfPlayer(i)
         tempPlayers[index].votes = tempPlayers[index].votes + amount
 
+
+
         this.setState({
-            players: tempPlayers
+            players: tempPlayers,
         }, () => {
             if (this.state.players[index].votes === votesNeeded) {
                 // Starting player/voted player was found, so need to reset all voting stuff
+                this.setState({doneVoting: true})
                 const obj = {code: this.state.gameData.code, startingPlayerId: i, players: this.state.players}
+                
                 Global.socket.emit('votingFinished', obj)
             }
             else {
                 // send the new players array to the server
                 const obj = {code: this.state.gameData.code, players: this.state.players}
+                console.log(obj)
                 Global.socket.emit('updateVote', obj)
             }
         });

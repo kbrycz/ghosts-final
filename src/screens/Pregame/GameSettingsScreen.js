@@ -28,7 +28,7 @@ class GameSettingsScreen extends React.Component {
             status: 0,
             isCreated: false,
             numPlayers: 4,
-            numGhosts: 2,
+            numGhosts: 1,
             topic: '',
             subList: [],
             currentSub: '',
@@ -39,7 +39,8 @@ class GameSettingsScreen extends React.Component {
             code: '',
             currentPlayerName: '',
             modalVisible: false,
-            premadeSets: []
+            premadeSets: [],
+            localPlayer: {}
         }
     }
 
@@ -64,7 +65,23 @@ class GameSettingsScreen extends React.Component {
                     subList: gameData.wordSet.subs,
                     code: gameData.code,
                     hostSocketId: Global.socket.id,
-                    isCreated: true
+                    isCreated: true,
+                    localPlayer: this.props.route.params.localPlayer
+                })
+            }
+            else if (this.state.gameState === 1) {
+                this.setState({
+                    code: this.props.route.params.code,
+                    hostSocketId: Global.socket.id,
+                    isCreated: false,
+                    localPlayer: this.props.route.params.localPlayer
+                })
+            }
+            else if (this.state.gameState === 2) {
+                this.setState({
+                    code: this.props.route.params.code,
+                    hostSocketId: Global.socket.id,
+                    localPlayer: this.props.route.params.localPlayer
                 })
             }
         })
@@ -166,15 +183,19 @@ class GameSettingsScreen extends React.Component {
             isCreated: this.state.isCreated
         }
 
+        let tempPlayer = this.state.localPlayer
+        tempPlayer.isWatching = this.state.isCreated
+        tempPlayer.canPlay = !this.state.isCreated
+
         this.setState({
             loading: false
         })
-        this.props.navigation.navigate('Lobby', {screen: 'LobbyScreen',  params: {gameData: starterData, isEdited: true }})
+        this.props.navigation.navigate('Lobby', {screen: 'LobbyScreen',  params: {gameData: starterData, isEdited: true, localPlayer: tempPlayer }})
     }
 
     // Update number of players value
     updateNumPlayers = (val) => {
-        if (this.state.numPlayers + val >= 4 && this.state.numPlayers + val <= 12) {
+        if (this.state.numPlayers + val >= 4 && this.state.numPlayers + val <= 11) {
             this.setState({
                 numPlayers: this.state.numPlayers + val,
                 numGhosts: Math.floor((this.state.numPlayers + val) / 2)
@@ -184,7 +205,7 @@ class GameSettingsScreen extends React.Component {
 
     // Update number of players value
     updateNumGhosts = (val) => {
-        if (this.state.numGhosts + val >= 1 && this.state.numGhosts + val <= this.state.numPlayers / 2) {
+        if (this.state.numGhosts + val >= 1 && this.state.numGhosts + val < Math.ceil(this.state.numPlayers / 2)) {
             this.setState({
                 numGhosts: this.state.numGhosts + val
             })
@@ -241,7 +262,6 @@ class GameSettingsScreen extends React.Component {
                 status: 12
             })
         }
-
     }
 
     // Sets the topic of the game 
@@ -282,7 +302,6 @@ class GameSettingsScreen extends React.Component {
             subsLeft: this.state.subsLeft + 1
         })
     }
-
 
     // Moves the status to the following page
     nextPage = () => {

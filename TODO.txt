@@ -1,9 +1,12 @@
 ************TODO NEXT TIME***********
+- Fix the ready up feature for host 
+
+
+
+************BACKLOG***********  
 - Major bug testing
 - Get screenshots of app for app store,
 - Set up app store stuff and begin beta testing
-************BACKLOG***********  
-
 ************GENERAL IDEAS***********
 
 ************V2 Ideas***********
