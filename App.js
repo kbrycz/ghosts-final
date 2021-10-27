@@ -15,6 +15,7 @@ import LobbyScreen from './src/screens/Pregame/LobbyScreen';
 import GameSettingsScreen from './src/screens/Pregame/GameSettingsScreen';
 import GameScreen from './src/screens/Game/GameScreen';
 import * as SplashScreen from 'expo-splash-screen';
+import AppLoading from 'expo-app-loading';
 
 
 // Creates stack for the Home screens
@@ -117,11 +118,7 @@ class App extends React.Component {
       PatrickHand: require('./assets/fonts/PatrickHand-Regular.ttf'),
     });
 
-    // Sets loading to false, indicating all of the loading is done and we can show the screens
-    this.setState({ 
-        loading: false,
-    });
-
+    // Waits three seconds for splash screen
     setTimeout(async () => {
       await SplashScreen.hideAsync();
     }, 3000);
@@ -142,8 +139,14 @@ class App extends React.Component {
   // Renders the jsx for the UI
   render() {
     if (this.state.loading) {
-      return <View style={styles.background}>
-             </View>
+      return (
+        <AppLoading
+          startAsync={this.loadEverything}
+          onFinish={() => this.setState({ loading: false })}
+          onError={console.warn}
+          autoHideSplash={false}
+        />
+      );
     } 
    else  {
       return( 

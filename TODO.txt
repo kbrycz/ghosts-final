@@ -1,7 +1,7 @@
 ************TODO NEXT TIME***********
 - Add ads to the game
 - say 4-12 players on app store, 
-- Update the website with the link 487 /
+- Change name to get rid of multiplayer on home screen
 
 ************BACKLOG***********  
 
