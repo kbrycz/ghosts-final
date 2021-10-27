@@ -18,7 +18,8 @@ class HowToScreen extends React.Component {
                 <ScrollView style={{marginBottom: Dimensions.get('window').height * .1, marginTop: Dimensions.get('window').height * .05}}>
                     <Text style={styles.headerText}>How to Play</Text>
                     <Text style={styles.sub}>Overview</Text>
-                    <Text style={styles.p}>Ghosts is a multiplayer party game that works best for players in the same room. 
+                    <Text style={styles.p}>Ghosts is a multiplayer party game that works best for 4-12 players that are able to talk to one another
+                                        (the same room or over a video call). 
                                         Each player will get assigned a word before the game starts. There are three different
                                         types of words that you could receive: the topic, a subtopic, or the word "ghost".</Text>
                     <Text style={styles.p}>The game consists of two teams: Humans (the topic and subtopic word holders) vs the ghosts.

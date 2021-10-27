@@ -1,16 +1,14 @@
 ************TODO NEXT TIME***********
-- Fix the ready up feature for host 
-
-
+- Add ads to the game
+- say 4-12 players on app store, 
+- Update the website with the link 487 /
 
 ************BACKLOG***********  
-- Major bug testing
-- Get screenshots of app for app store,
-- Set up app store stuff and begin beta testing
+
 ************GENERAL IDEAS***********
 
 ************V2 Ideas***********
-- Add ads to the game
+
 - Add game packs to the store
 - Have the game show the names of the ghosts who guessed correctly
 - Allow users to stay in the lobby of the game after the game finishes

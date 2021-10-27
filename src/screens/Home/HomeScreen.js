@@ -17,30 +17,16 @@ class HomeScreen extends React.Component {
             loading: false,
             text: '',
             modalVisible: false,
-            fadeAnim: new Animated.Value(0),
             connected: false,
         }
     }
 
     componentDidMount() {
-        this.fadeIn()
-
         // If the screen gets focus, update the gamedata field
         this._unsubscribe = this.props.navigation.addListener('focus', () => {
-            console.log("in here")
             this.setState({connected: false})
         });
     }
-
-    // Fading from the splash screen
-    fadeIn = () => {
-        // Will change fadeAnim value to 1 in 5 seconds
-        Animated.timing(this.state.fadeAnim, {
-          toValue: 1,
-          useNativeDriver: true,
-          duration: 4500
-        }).start();
-      };
 
     // Set the simple modal component variable
     setModalVisible = (isVis) => {

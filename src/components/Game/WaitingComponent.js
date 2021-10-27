@@ -45,7 +45,8 @@ const WaitingComponent = ({isWatching, word, isGhost, moveToScreen, isDead}) => 
                             </>
                             : <>
                                 <Text style={styles.counter}>
-                                    You and the other ghosts must now vote for a player to start!
+                                    You and the other ghosts must now vote for a player to start! The humans are being told to 
+                                    close their eyes and wait for a sound! (Put your ringer on!)
                                 </Text>
                                 <TouchableOpacity onPress={() => moveToScreen(1)}>
                                     <Text style={styles.playButton}>Ready</Text>
@@ -80,7 +81,7 @@ const WaitingComponent = ({isWatching, word, isGhost, moveToScreen, isDead}) => 
                             />
                             <Text style={styles.counter}>
                                 Waiting for the ghosts to choose who they would like to start the round!
-                                Try to think of some clues in the meantime! Close your eyes and wait for a sound to wake you up! (Make sure your volume is up!)
+                                Try to think of some clues in the meantime! Close your eyes and wait for a sound to wake you up! (Make sure your ringer is on!)
                             </Text>
                             </>
                         }

@@ -182,7 +182,7 @@ class CreateScreen extends React.Component {
         if (this.state.numPlayers + val >= 4 && this.state.numPlayers + val <= 11) {
             this.setState({
                 numPlayers: this.state.numPlayers + val,
-                numGhosts: Math.floor((this.state.numPlayers + val) / 2)
+                numGhosts: Math.floor((this.state.numPlayers + val) / 2) - 1
             })
         }
     }
@@ -307,7 +307,8 @@ class CreateScreen extends React.Component {
         if (this.state.status > 0) {
             if (this.state.status === 11) {
                 this.setState({status: 0})
-            } else {
+            } 
+            else {
                 this.setState({status: this.state.status - 1})
             }
         } else {
