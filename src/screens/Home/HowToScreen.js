@@ -49,7 +49,7 @@ class HowToScreen extends React.Component {
                                            that fits in with the others. Remember, you're not allowed to explain yourself, so you might get lucky by having one person find a relation to 
                                            the word they have.</Text>
                     <Text style={styles.p}>The rest of the players
-                                        now get a turn! Once everyone has gone, all of the other characters get to vote anonymously 
+                                        now get a turn! Once everyone has gone, everyone get to vote anonymously 
                                         to kick someone out of the game.</Text>
                     <Text style={styles.p}>If you are kicked out of the game, you are not allowed to talk or contribute in any way! DO NOT tell anyone what you were. 
                                             If you are a ghost, you are still allowed to guess 

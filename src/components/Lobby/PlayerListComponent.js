@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     },
     word: {
         color: '#dee5f5',
-        textTransform: 'uppercase',
+        textTransform: 'capitalize',
         fontSize: Dimensions.get('window').height * .03,
         fontFamily: 'PatrickHand',
         flex: 2,
