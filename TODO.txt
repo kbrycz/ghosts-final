@@ -8,7 +8,7 @@
 ************GENERAL IDEAS***********
 
 ************V2 Ideas***********
-
+- Allow user to quit in the middle of the game
 - Add game packs to the store
 - Have the game show the names of the ghosts who guessed correctly
 - Allow users to stay in the lobby of the game after the game finishes

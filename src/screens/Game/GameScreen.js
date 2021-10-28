@@ -15,6 +15,7 @@ import EndComponent from '../../components/Ending/EndComponent'
 import { Audio } from 'expo-av';
 import SimpleModalComponent from '../../components/Modal/SimpleModalComponent'
 import { Feather } from '@expo/vector-icons';
+import { AdMobInterstitial } from 'expo-ads-admob';
 
 
 class GameScreen extends React.Component {
@@ -45,6 +46,14 @@ class GameScreen extends React.Component {
             hasGuessed: false,
             doneVoting: false
         }
+    }
+
+    // Displays the full screen ad
+    displayAd = async () => {
+        // Display an interstitial (Change to ca-app-pub-3940256099942544/4411468910 for test)
+        await AdMobInterstitial.setAdUnitID('ca-app-pub-1470582515457694/3173226233');
+        await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true});
+        await AdMobInterstitial.showAdAsync();
     }
 
     // Quit the game and make sure all players know
@@ -305,8 +314,9 @@ class GameScreen extends React.Component {
     }
 
     // Disconnects all of the players from the socket
-    triggerEndGame = () => {
+    triggerEndGame = async () => {
         Global.socket.disconnect()
+        await this.displayAd()
         this.setState({
             status: 7,
             loading: false
