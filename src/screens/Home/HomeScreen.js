@@ -76,7 +76,7 @@ class HomeScreen extends React.Component {
                 <LoadingIndicator loading={this.state.loading} />
                 <SafeAreaView>
                     <Text style={styles.title}>Ghosts</Text>
-                    <Text style={styles.subtitle}>Online Multiplayer Party Game </Text>
+                    <Text style={styles.subtitle}>Online Party Game </Text>
                     <View style={styles.iconView}>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('Store')}>
                             <FontAwesome5 name="store" style={styles.icon}/>
