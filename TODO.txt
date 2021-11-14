@@ -1,5 +1,4 @@
 ************TODO NEXT TIME***********
-- Allow user to quit in the middle of the game
 - Add game packs to the store
 ************BACKLOG***********  
 

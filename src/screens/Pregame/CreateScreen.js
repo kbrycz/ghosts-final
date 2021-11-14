@@ -34,12 +34,13 @@ class CreateScreen extends React.Component {
             finalSet: {},
             currentPlayerName: '',
             modalVisible: false,
-            premadeSets: []
+            premadeSets: [],
+            phantomPackPurchased: false
         }
     }
 
-    // Fetches temp sets
-    fetchSets = () =>  {
+    // Gets all of the normal sets for the game
+    getNormalSets = () => {
         let temp = []
 
         let set1 = {
@@ -114,12 +115,116 @@ class CreateScreen extends React.Component {
         temp.push(set6)
         temp.push(set7)
         temp.push(set8)
+        return temp
+    }
+
+    // Gets all of the normal sets for the game
+    getPhantomSets = () => {
+        let temp = []
+
+        let set1 = {
+            id: 10,
+            title: 'Phantom Set 1',
+            topic: 'Cities',
+            subs: ['Detroit', 'Chicago', 'Miami', 'Charlotte', 'Dallas', 'Las Vegas', 'Boston'],
+            userCompleted: false,
+            diff: 0
+        }
+        let set2 = {
+            id: 11,
+            title: 'Phantom Set 2',
+            topic: 'Presidents',
+            subs: ['Lincoln', 'Washington', 'Skittles', 'Kit Kat', 'Laffy Taffy', 'Pez', 'Tootsie Roll', 'Ring Pops', 'Twizzlers'],
+            userCompleted: false,
+            diff: 0
+        }
+        let set3 = {
+            id: 12,
+            title: 'Phantom Set 3',
+            topic: 'Social Media',
+            subs: ['Facebook', 'Twitter', 'Snapchat', 'TikTok', 'Instagram', 'Reddit', 'LinkedIn'],
+            userCompleted: false,
+            diff: 0
+        }
+        let set4 = {
+            id: 13,
+            title: 'Phantom Set 4',
+            topic: 'NBA Teams',
+            subs: ['Lakers', 'Bulls', 'Nets', 'Pistons', 'Heat', 'Hornets', 'Rockets', 'Bucks'],
+            userCompleted: false,
+            diff: 1
+        }
+        let set5 = {
+            id: 14,
+            title: 'Phantom Set 5',
+            topic: 'Presidents',
+            subs: ['Lincoln', 'Washington', 'Biden', 'Trump', 'Obama', 'Reagan', 'Kennedy', 'Jefferson', 'Adams', 'Clinton'],
+            userCompleted: false,
+            diff: 1
+        }
+        let set6 = {
+            id: 15,
+            title: 'Phantom Set 6',
+            topic: 'Car Brands',
+            subs: ['Tesla', 'General Motors', 'Ford', 'Jeep', 'Toyota', 'Jaguar', 'Porsche'],
+            userCompleted: false,
+            diff: 1
+        }
+        let set7 = {
+            id: 16,
+            title: 'Phantom Set 7',
+            topic: 'Billionaires',
+            subs: ['Jeff Bezos', 'Elon Musk', 'Bill Gates', 'Mark Zuckerberg', 'Warren Buffett', 'Larry Page', 'Steve Ballmer', 'Michael Bloomberg', 'Daniel Gilbert', 'Jack Ma'],
+            userCompleted: false,
+            diff: 2
+        }
+        let set8 = {
+            id: 17,
+            title: 'Phantom Set 8',
+            topic: 'Female Actors',
+            subs: ['Scarlett Johansson', 'Jennifer Aniston', 'Emma Stone', 'Jennifer Lawrence', 'Reese Witherspoon', 'Margot Robbie', 'Keira Knightley'],
+            userCompleted: false,
+            diff: 2
+        }
+        temp.push(set1)
+        temp.push(set2)
+        temp.push(set3)
+        temp.push(set4)
+        temp.push(set5)
+        temp.push(set6)
+        temp.push(set7)
+        temp.push(set8)
+        return temp
+    }
+
+    // Fetches temp sets
+    fetchSets = () =>  {
+        let temp = []
+        let normalSets = this.getNormalSets()
+        for (let i = 0; i < normalSets.length; ++i) {
+            temp.push(normalSets[i])
+        }    
+
+        // Get the phantom sets
+        if (this.state.phantomPackPurchased) {
+            console.log("here")
+            let phantomSets = this.getPhantomSets()
+            for (let i = 0; i < phantomSets.length; ++i) {
+                temp.push(phantomSets[i])
+            }    
+        }
         this.setState({
             premadeSets: temp
         })
+
     }
 
     componentDidMount() {
+        // Figure out if user has purchased the phantom pack here
+        this.setState({
+            phantomPackPurchased: true
+        }, () => this.fetchSets())
+
         // In case user cannot connect to the server
         Global.socket.on('error', function (err) {
             this.setState({
@@ -132,8 +237,7 @@ class CreateScreen extends React.Component {
         Global.socket.on('createRoom', code => {
             console.log("Room Created successfully: " + code)
             this.getReadyForGame(code)
-        }) 
-        this.fetchSets()
+        })
     }
 
     // Gets the user ready to create the game, by setting up game details and their own localplayer data

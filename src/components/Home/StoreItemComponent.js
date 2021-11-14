@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, StyleSheet, Text, FlatList, TouchableOpacity, Dimensions} from 'react-native'
+import {View, StyleSheet, Text, FlatList, TouchableOpacity, Dimensions, Image} from 'react-native'
 import { EvilIcons } from '@expo/vector-icons'; 
 import { Entypo } from '@expo/vector-icons'; 
 import QuitModalComponent from '../Modal/QuitModalComponent';
@@ -18,6 +18,19 @@ const StoreItemComponent = ({gamePack, purchaseGamePack}) => {
 
     const [modalExitVisible, setModalExitVisible] = React.useState(false)
 
+    const getPhoto = () => {
+        if (gamePack.id === 0 ) {
+            return <>
+            <View style={styles.imageContainer}>
+                <Image
+                    style={styles.image} 
+                    source={require('../../../assets/phantom.png')}
+                    />
+            </View>
+            </>
+        }
+    }
+
     // Has the first container have the border
     const containerStyle = (id) => {
         if (id === 0) {
@@ -29,6 +42,7 @@ const StoreItemComponent = ({gamePack, purchaseGamePack}) => {
 
     return (
         <View style={[styles.container, containerStyle(gamePack.id)]}>
+            {getPhoto()}
             <Text style={styles.word}>{gamePack.title}</Text>
             <Text style={styles.sub}>Includes {gamePack.count} full games!</Text>
             <Text style={styles.price}>{gamePack.price}</Text>
@@ -43,11 +57,19 @@ const StoreItemComponent = ({gamePack, purchaseGamePack}) => {
 }
 
 const styles = StyleSheet.create({
-
+    imageContainer: {
+        marginVertical: Dimensions.get('window').height * .02,
+    },
+    image: {
+        resizeMode: 'contain',
+        marginHorizontal: Dimensions.get('window').width * .2,
+        width: Dimensions.get('window').width * .6,
+        height: Dimensions.get('window').height * .25,
+    },
     button: {
         borderRadius: 10,
-        marginLeft: Dimensions.get('window').width * .1,
-        marginRight: Dimensions.get('window').width * .1,
+        marginLeft: Dimensions.get('window').width * .2,
+        marginRight: Dimensions.get('window').width * .2,
         paddingLeft: Dimensions.get('window').width * .08,
         paddingRight: Dimensions.get('window').width * .08,
         elevation: 2,
@@ -71,9 +93,9 @@ const styles = StyleSheet.create({
     },
     container: {
         width: Dimensions.get('window').width,
-        padding:  Dimensions.get('window').height * .04,
         borderBottomWidth: 1,
         borderColor: 'rgba(144, 156, 216, .2)',
+        paddingVertical: Dimensions.get('window').height * .03,
     }, 
     wordContainer: {
         flex: 1,

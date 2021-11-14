@@ -16,6 +16,7 @@ import { Audio } from 'expo-av';
 import SimpleModalComponent from '../../components/Modal/SimpleModalComponent'
 import { Feather } from '@expo/vector-icons';
 import { AdMobInterstitial } from 'expo-ads-admob';
+import QuitModalComponent from '../../components/Modal/QuitModalComponent'
 
 
 class GameScreen extends React.Component {
@@ -44,7 +45,8 @@ class GameScreen extends React.Component {
             isGoingHome: false,
             modalText: '',
             hasGuessed: false,
-            doneVoting: false
+            doneVoting: false,
+            modalExitVisible: false
         }
     }
 
@@ -60,6 +62,7 @@ class GameScreen extends React.Component {
     returnHome = () => {
         console.log("Returning home")
         Global.socket.disconnect()
+        this.setState({modalVisible: false, modalExitVisible: false})
         this.props.navigation.navigate('Home', { screen: 'Main' })
     }
 
@@ -326,10 +329,17 @@ class GameScreen extends React.Component {
     // Returns the user to the home screen when the host quits or exits simple modal
     closeModal = () => {
         if (this.state.isGoingHome) {
+
             this.returnHome()
         } else {
             this.setState({modalVisible: false})
         }
+    }
+
+    // Quits the game
+    quit = () => {
+        Global.socket.emit('leavingGame');
+        this.props.navigation.navigate('Home')
     }
 
     // Make sure there are still people in the lobby
@@ -447,6 +457,11 @@ class GameScreen extends React.Component {
         this.setState({guess: g})
     }
 
+    // Sets the quitting menu visible
+    setModalExitVisible = (isVis) => {
+        this.setState({modalExitVisible: isVis})
+    }
+
     // ghosts submit their guess here
     ghostSubmitGuess = () => {
         let obj = {isRight: false, code: this.state.gameData.code}
@@ -551,6 +566,9 @@ class GameScreen extends React.Component {
                 <View style={styles.container}>
                     <LoadingIndicator loading={this.state.loading} />
                     <SafeAreaView style={styles.safe}>
+                        <TouchableOpacity style={{zIndex: 10}} onPress={() => this.setModalExitVisible(true)} >
+                            <Feather name="menu" style={styles.menu} />
+                        </TouchableOpacity>
                         <TouchableOpacity style={{zIndex: 10}} onPress={() => this.props.navigation.navigate('HowToScreen')} >
                             <Feather name="info" style={styles.rules} />
                         </TouchableOpacity>
@@ -558,6 +576,8 @@ class GameScreen extends React.Component {
                     </SafeAreaView>
                     <SimpleModalComponent modalVisible={this.state.modalVisible} setModalVisible={this.closeModal} 
                                               text={this.state.modalText} buttonText={"OK"} />
+                    <QuitModalComponent modalExitVisible={this.state.modalExitVisible} setModalExitVisible={this.setModalExitVisible} 
+                    text="Are you sure you want to leave? You will be removed from the lobby." func={this.quit} buttonText={"Quit"} />
                 </View>
             </>
         )
@@ -575,6 +595,13 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 5,
         right: Dimensions.get('window').width * .04,
+    },
+    menu: {
+        fontSize: Dimensions.get('window').height * .03,
+        color: Color.TEXT,
+        position: 'absolute',
+        top: 5,
+        left: Dimensions.get('window').width * .04,
     },
 })
 

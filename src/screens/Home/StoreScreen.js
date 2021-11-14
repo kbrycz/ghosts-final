@@ -27,22 +27,12 @@ class AboutScreen extends React.Component {
         let gp1 = {
                 id: 0,
                 isBought: false, 
-                title: 'Intermediate Expansion Pack',
-                count: 10,
+                title: 'Phantom Word Pack',
+                count: 8,
                 gameSets: [],
-                price: '$1.99'
+                price: '$1.99',
             }
-
-        let gp2 = {
-            id: 0,
-            isBought: false, 
-            title: 'Skilled Expansion Pack',
-            count: 10,
-            gameSets: [],
-            price: '$1.99'
-        }
         gps.push(gp1)
-        gps.push(gp2)
         this.setState({gamePacks: gps, loadingContent: false})
     }
 
@@ -59,18 +49,19 @@ class AboutScreen extends React.Component {
         return (
             <View>
                 <CircleComponent />
-                <Text style={styles.headerText}>Sorry!</Text>
+                {/* <Text style={styles.headerText}>Sorry!</Text>
                 <Text style={styles.subText}>We currently have no expansion packs available 
-                                             in our store! Come back soon!</Text>
+                                             in our store! Come back soon!</Text> */}
+                <Text style={styles.headerText}>Store</Text>
+                <ScrollView style={styles.scroll}>
 
-                {/* <ScrollView style={styles.scroll}>
-                    <Text style={styles.headerText}>Store</Text>
                     {
                         this.state.gamePacks.map((pack, index) => {
                             return <StoreItemComponent key={index} gamePack={pack} purchaseGamePack={this.purchaseGamePack} /> 
                         })
                     }
-                </ScrollView> */}
+                    <Text style={styles.description}>Only one person has to buy per group! Have the person who purchased be the host and everyone will be able to play!</Text>
+                </ScrollView>
             </View>
         )
     }
@@ -82,8 +73,6 @@ const styles = StyleSheet.create({
         marginTop: Dimensions.get('window').height * .1,
         marginLeft: Dimensions.get('window').width * .12,
         marginRight: Dimensions.get('window').width * .12,
-        marginBottom: Dimensions.get('window').height * .03,
-        lineHeight: Dimensions.get('window').height * .08,
         textAlign: 'center',
         fontSize: Dimensions.get('window').height * .05,
         color: Color.MAIN,
@@ -102,9 +91,18 @@ const styles = StyleSheet.create({
     },
     scroll: {
         marginBottom: Dimensions.get('window').height * .1,
-        marginTop: Dimensions.get('window').height * .05,
+        marginTop: Dimensions.get('window').height * .03,
         height: Dimensions.get('window').height
-    }
+    },
+    description: {
+        marginTop: Dimensions.get('window').height * .02,
+        marginLeft: Dimensions.get('window').width * .15,
+        marginRight: Dimensions.get('window').width * .15,
+        textAlign: 'center',
+        fontSize: Dimensions.get('window').height * .015,
+        color: Color.MAIN,
+        fontFamily: 'PatrickHand'
+    },
 })
 
 export default AboutScreen
