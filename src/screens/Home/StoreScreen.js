@@ -6,7 +6,7 @@ import CircleComponent from '../../components/General/CircleComponent'
 import LoadingIndicator from '../../components/General/LoadingIndicator'
 import StoreItemComponent from '../../components/Home/StoreItemComponent'
 
-class AboutScreen extends React.Component {
+class StoreScreen extends React.Component {
 
     constructor() {
         super()
@@ -105,4 +105,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default AboutScreen
+export default StoreScreen
