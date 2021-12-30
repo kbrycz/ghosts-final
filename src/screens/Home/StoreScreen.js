@@ -12,48 +12,44 @@ class StoreScreen extends React.Component {
         super()
         this.state = {
             gamePacks: [],
-            loadingContent: true
         }
     }
 
-    componentDidMount() {
-        this.getGamePacks()
-    }
+    // componentDidMount() {
+    //     this.getGamePacks()
+    // }
 
-    // Gets the game packs
-    getGamePacks = () => {
-        let gps = []
+    // // Gets the game packs
+    // getGamePacks = () => {
+    //     let gps = []
 
-        let gp1 = {
-                id: 0,
-                isBought: false, 
-                title: 'Phantom Word Pack',
-                count: 8,
-                gameSets: [],
-                price: '$1.99',
-            }
-        gps.push(gp1)
-        this.setState({gamePacks: gps, loadingContent: false})
-    }
+    //     let gp1 = {
+    //             id: 0,
+    //             isBought: false, 
+    //             title: 'Phantom Word Pack',
+    //             count: 8,
+    //             gameSets: [],
+    //             price: '$1.99',
+    //         }
+    //     gps.push(gp1)
+    //     this.setState({gamePacks: gps, loadingContent: false})
+    // }
 
-    // User purchases game pack
-    purchaseGamePack = (id) => {
-        console.log("purchasing game pack " + id)
-    }
+    // // User purchases game pack
+    // purchaseGamePack = (id) => {
+    //     console.log("purchasing game pack " + id)
+    // }
 
 
     render() {
-        if (this.state.loadingContent) {
-            return <LoadingIndicator loading={this.state.loadingContent} />
-        }
         return (
             <View>
                 <CircleComponent />
-                {/* <Text style={styles.headerText}>Sorry!</Text>
+                <Text style={styles.headerText}>Sorry!</Text>
                 <Text style={styles.subText}>We currently have no expansion packs available 
-                                             in our store! Come back soon!</Text> */}
-                <Text style={styles.headerText}>Store</Text>
-                <ScrollView style={styles.scroll}>
+                                             in our store! Come back soon!</Text>
+                {/* <Text style={styles.headerText}>Store</Text> */}
+                {/* <ScrollView style={styles.scroll}>
 
                     {
                         this.state.gamePacks.map((pack, index) => {
@@ -61,7 +57,7 @@ class StoreScreen extends React.Component {
                         })
                     }
                     <Text style={styles.description}>Only one person has to buy per group! Have the person who purchased be the host and everyone will be able to play!</Text>
-                </ScrollView>
+                </ScrollView> */}
             </View>
         )
     }

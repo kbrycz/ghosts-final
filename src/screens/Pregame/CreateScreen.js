@@ -35,7 +35,7 @@ class CreateScreen extends React.Component {
             currentPlayerName: '',
             modalVisible: false,
             premadeSets: [],
-            phantomPackPurchased: false
+            phantomPackPurchased: true
         }
     }
 
@@ -221,9 +221,7 @@ class CreateScreen extends React.Component {
 
     componentDidMount() {
         // Figure out if user has purchased the phantom pack here
-        this.setState({
-            phantomPackPurchased: true
-        }, () => this.fetchSets())
+        this.fetchSets()
 
         // In case user cannot connect to the server
         Global.socket.on('error', function (err) {
