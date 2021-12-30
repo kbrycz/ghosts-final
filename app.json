@@ -2,7 +2,7 @@
   "expo": {
     "name": "Ghosts",
     "slug": "ghosts",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -17,10 +17,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "config": {
-        "googleMobileAdsAppId": "ca-app-pub-1470582515457694~7525095285"
-      }
+      "bundleIdentifier": "com.alligatorgames.ghosts"
     },
     "android": {
       "adaptiveIcon": {
